@@ -63,8 +63,27 @@ $form_types = [
 ];
 $form_type = $form_types[$_POST['form_type'] ?? ''] ?? 'Website Submission';
 
-$recipient = CONTACT_EMAIL_GENERAL; // kasabazaar109@gmail.com — every form submission goes here
-$subject   = "$form_type from $name";
+// Every inbox in $form_recipients (includes/config.php) gets a copy. Filtering here
+// rather than letting addAddress() throw means one bad entry in the roster costs that
+// recipient alone instead of the entire submission. Keyed by lowercased address so a
+// duplicate cannot send the same person two copies; first spelling in the roster wins.
+$recipients = [];
+foreach ($form_recipients as $address) {
+    $address = trim($address);
+    $key     = strtolower($address);
+    if ($address !== '' && !isset($recipients[$key]) && filter_var($address, FILTER_VALIDATE_EMAIL)) {
+        $recipients[$key] = $address;
+    }
+}
+
+if (!$recipients) {
+    http_response_code(500);
+    error_log('Mailer error: $form_recipients holds no valid address — nothing was sent.');
+    echo "Server failed to send mail. Please try again later or contact us directly.";
+    exit;
+}
+
+$subject = "$form_type from $name";
 
 $email_content = "Form: $form_type\nName: $name\nEmail: $email\n";
 foreach ($fields as $key => $label) {
@@ -89,7 +108,9 @@ try {
     $mail->Port       = SMTP_PORT;
 
     $mail->setFrom(SMTP_USERNAME, 'KASAROSE LOGISTICS Website');
-    $mail->addAddress($recipient);
+    foreach ($recipients as $address) {
+        $mail->addAddress($address);
+    }
     $mail->addReplyTo($email, $name);
 
     $mail->isHTML(false);

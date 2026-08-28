@@ -322,9 +322,12 @@ still the old domain, and still the account that actually sends; `CONTACT_EMAIL_
 `support@kasarose.com`) live in `includes/mail-config.php`, which is **gitignored and not checked in** — if that
 file is missing, `mailer.php` will fatal on `require`; recreate it locally with
 `SMTP_HOST`/`SMTP_PORT`/`SMTP_SECURE`/`SMTP_USERNAME`/`SMTP_PASSWORD` constants (see `.gitignore`). All form
-submissions are addressed to `CONTACT_EMAIL_GENERAL` (`kasabazaar109@gmail.com`, defined in
-`includes/config.php`) regardless of which SMTP account sends them — don't hardcode a different recipient in
-`mailer.php`. Any new form should reuse this same `#ajax-contact` / `#form-messages` / `form.js` pattern, add its
+submissions are addressed to every inbox in the `$form_recipients` array in `includes/config.php`
+(`kasabazaar109@gmail.com`, `support@kasarose.com`, `support@kasabazaar.com` — the list is expected to grow),
+regardless of which SMTP account sends them. `mailer.php` drops blank, malformed and duplicate entries before
+sending, so one bad address costs that recipient rather than the whole submission. **Add a recipient to that
+array, never to `mailer.php`** — the `CONTACT_EMAIL_GENERAL` constant it replaced no longer exists. Any new
+form should reuse this same `#ajax-contact` / `#form-messages` / `form.js` pattern, add its
 fields to `mailer.php`'s `$fields` map and a `form_type` value, and post to `mailer.php` rather than introducing a
 new submission mechanism.
 

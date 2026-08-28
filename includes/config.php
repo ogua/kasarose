@@ -47,8 +47,18 @@ define('CONTACT_PHONE_GH_1_TEL', '+233545170568');
 define('CONTACT_PHONE_GH_2', '+233 50 972 5081');
 define('CONTACT_PHONE_GH_2_TEL', '+233509725081');
 
-define('CONTACT_EMAIL_GENERAL', 'kasabazaar109@gmail.com'); // inbox that receives every form submission
 define('CONTACT_EMAIL_SUPPORT', 'support@kasarose.com');
+
+// Every inbox that receives a form submission (contact, quote, feedback). mailer.php
+// addresses all of them on every send, so adding or removing a colleague is a one-line
+// change here and nowhere else — never hardcode a recipient in mailer.php. Entries that
+// are blank, malformed or duplicated are skipped at send time rather than aborting the
+// send, so a typo here costs that one recipient, not the whole submission.
+$form_recipients = [
+    'kasabazaar109@gmail.com',   // original catch-all inbox
+    'support@kasarose.com',      // the published support address (CONTACT_EMAIL_SUPPORT)
+    'support@kasabazaar.com',    // old-domain account; also the SMTP sender
+];
 
 define('CONTACT_REGIONS', 'United States &bull; Ghana');
 
