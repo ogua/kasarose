@@ -946,6 +946,18 @@ ul.ct-list {
     }
 }
 
+// Neutral in-progress state for #form-messages, shown by js/form.js while an AJAX
+// submission is in flight. Deliberately neither green nor red — the send has not
+// resolved yet, so it must not read as either outcome.
+.sending {
+    padding: 15px;
+    margin-bottom: 20px;
+    color: var(--white);
+    background-color: var(--dark);
+    border: 1px solid var(--dark);
+    border-radius: 5px;
+}
+
 .success {
     padding: 15px;
     margin-bottom: 20px;

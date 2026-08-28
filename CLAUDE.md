@@ -311,6 +311,14 @@ are ever wanted, generate them dynamically rather than hand-listing slugs.
 [js/form.js](js/form.js), which serializes `#ajax-contact` and POSTs to the form's `action` (`mailer.php`),
 writing the response into `#form-messages`, then calls `form[0].reset()` on success — **not** a hardcoded list of
 field ids, so a new form or a new field on an existing form is cleared automatically; don't revert to an id list.
+While a submission is in flight it disables the submit button, swaps its contents for a Bootstrap spinner plus
+"Sending…", shows a neutral `.sending` message (styled in `_theme.scss` alongside `.success`/`.error`), and
+ignores repeat submits — then restores everything in `.always()`, so the button comes back on success, failure
+and network drop alike. The button's original markup is **captured at load and restored verbatim**, because the
+three forms have different labels ("Send Message" / "Request a Quote" / "Send Feedback") — never hardcode a
+label there. All of this lives in `form.js` alone, so the three pages need no markup for it and a new form gets
+it for free. Note `js/form.js` is hand-written and **not** generated — only `app/js/custom.js` is compiled by
+Gulp, so edit `js/form.js` in place.
 [mailer.php](mailer.php) is field-driven: a `$fields` map of every POST key any form may send to the label it
 should appear under in the email, plus a `form_type` hidden input (`quote` / `contact` / `feedback`, matched
 against a fixed whitelist — **never** echo an arbitrary POST value into the subject line) so the team can triage
