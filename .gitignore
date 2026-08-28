@@ -1,0 +1,4 @@
+node_modules
+vendor
+includes/mail-config.php
+includes/db-config.php

@@ -1,0 +1,29 @@
+{
+  "name": "gulp-browsersync",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-scss": "gulp scssTask"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.26.13",
+    "cssnano": "^4.1.10",
+    "gulp": "^4.0.2",
+    "gulp-imagemin": "^9.0.0",
+    "gulp-postcss": "^9.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-terser": "^1.4.0",
+    "gulp-tinypng": "^1.0.2",
+    "postcss": "^8.1.2",
+    "sass": "^1.80.4"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "bootstrap": "5.3.3"
+  }
+}

@@ -1,0 +1,8 @@
+This project is for KasaBazaar Group of companies. this current project is a template we dowmloaded online to use for
+the website development. the current website is just a landing page that shows the services of kasabazaar.
+this is the link. https://kasabazaar.com. we have also successfully developed rose door to door shipping and the link is https://rddshipping.com.
+
+we now current want to develop the website for the mother company. critically analize the template a produce a well designed and professional website
+in php. use include where neccessary so that you dont repeat codes. the current template is in html. 
+
+we also have a compnay called Neoride Africa which is also part of the KasaBazaar group of companies. this is the link. https://neorideafrica.com 
