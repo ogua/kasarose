@@ -43,10 +43,10 @@ require 'partials/header.php';
                         <img src="images/slide-bg.png" alt="" class="img-fluid">
                      </div>
                      <span class="sub-title h5">One Group, Multiple Strengths</span>
-                     <h1 class="display-1 fw-bold">One group moving goods, people and property forward.</h1>
-                     <p>Our own freight network, Neoride Africa's mobility solutions and the KROSEMARKET
-                        marketplace &mdash; KASAROSE LOGISTICS serves clients across the United States, Ghana,
-                        and beyond.</p>
+                     <!-- h2, not h1: only one h1 per page, and the first slide already carries it. -->
+                     <h2 class="display-1 fw-bold">One group moving goods, people and property forward.</h2>
+                     <p>Our own freight network and the KROSEMARKET marketplace &mdash; KASAROSE LOGISTICS
+                        serves clients across the United States, Ghana, and beyond.</p>
                      <div class="d-sm-flex slide-cta gap-4">
                         <a href="our-companies.php" class="btn btn-hover btn-primary">Our Companies <i
                               class="fa fa-arrow-right"></i>
@@ -100,7 +100,7 @@ require 'partials/header.php';
                   <div class="ab-main-img">
                      <img src="images/about-m.jpg" class="img-fluid" alt="">
                      <div class="experien-stat">
-                        <p class="text-info m-0"> <span class="purecounter" data-purecounter-end="3">3</span> Group
+                        <p class="text-info m-0"> <span class="purecounter" data-purecounter-end="2">2</span> Group
                            Companies</p>
                      </div>
                      <div class="about-sm">
@@ -114,13 +114,12 @@ require 'partials/header.php';
                   <span class="sub-title2 fadeInUp single">About KASAROSE LOGISTICS</span>
                   <h2 class="sec-title">A Group Built on Trade, Property &amp; Mobility</h2>
                   <p class="lead">KASAROSE LOGISTICS operates across international trade, real estate,
-                     property management, freight logistics and urban mobility &mdash; serving clients in the United
+                     property management and freight logistics &mdash; serving clients in the United
                      States and Ghana.</p>
                   <ul class="check">
                      <li>Door-to-Door Air &amp; Sea Freight</li>
                      <li>Ecommerce Package Forwarding &amp; Tracking</li>
                      <li>Real Estate &amp; Property Management</li>
-                     <li>Mobility Solutions via Neoride Africa</li>
                   </ul>
                   <div class="d-sm-flex align-items-center about-cta gap-5">
                      <a href="about.php" class="btn btn-primary">About More <i class="fa fa-arrow-right"></i><span></span> </a>
@@ -206,111 +205,23 @@ require 'partials/header.php';
             <div class="col-lg-12">
                <div class="service-slider2 swiper">
                   <div class="swiper-wrapper">
+                     <?php foreach ($site_services as $slug => $svc): ?>
                      <div class="swiper-slide">
                         <div class="service-card2 round bg-info">
-                           <div class="serv-thumb" style="background-image: url('images/serv-s3.png');">
-                     <span class="icon round-2 text-white">
-                        <i class="fa-solid fa-plane-up fa-2x" aria-hidden="true"></i>
-                     </span>
-                  </div>
-                  <h3 class="display-4"><a href="air-freight.php">Air Freight</a></h3>
-                           <p>Fast, reliable air freight for time-sensitive international shipments.</p>
-                           <div class="service-footer border-top">
-                              <a class="custom-btn" href="air-freight.php"><span class="icon rounded-3"><i
-                                       class="fa fa-arrow-right"></i></span>View Details</a>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="swiper-slide">
-                        <div class="service-card2 round bg-info">
-                           <div class="serv-thumb" style="background-image: url('images/serv-s6.png');">
-                     <span class="icon round-2 text-white">
-                        <i class="fa-solid fa-ship fa-2x" aria-hidden="true"></i>
-                     </span>
-                  </div>
-                  <h3 class="display-4"><a href="ocean-freight.php">Ocean Freight</a></h3>
-                           <p>Cost-effective sea freight for bulk and oversized shipments.</p>
-                           <div class="service-footer border-top">
-                              <a class="custom-btn" href="ocean-freight.php"><span class="icon rounded-3"><i
-                                       class="fa fa-arrow-right"></i></span>View Details</a>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="swiper-slide">
-                        <div class="service-card2 round bg-info">
-                           <div class="serv-thumb" style="background-image: url('images/serv-s9.png');">
+                           <div class="serv-thumb" style="background-image: url('<?php echo $svc['thumb']; ?>');">
                               <span class="icon round-2 text-white">
-                                 <i class="fa-solid fa-warehouse fa-2x" aria-hidden="true"></i>
+                                 <i class="fa-solid <?php echo $svc['icon']; ?> fa-2x" aria-hidden="true"></i>
                               </span>
                            </div>
-                           <h3 class="display-4"><a href="warehousing.php">Warehousing</a></h3>
-                           <p>Secure storage and inventory support &mdash; coming soon from our group.</p>
+                           <h3 class="display-4"><a href="services.php#<?php echo $slug; ?>"><?php echo $svc['label']; ?></a></h3>
+                           <p><?php echo $svc['tagline']; ?></p>
                            <div class="service-footer border-top">
-                              <a class="custom-btn" href="warehousing.php"><span class="icon rounded-3"><i
+                              <a class="custom-btn" href="services.php#<?php echo $slug; ?>"><span class="icon rounded-3"><i
                                        class="fa fa-arrow-right"></i></span>View Details</a>
                            </div>
                         </div>
                      </div>
-                     <div class="swiper-slide">
-                        <div class="service-card2 round bg-info">
-                           <div class="serv-thumb" style="background-image: url('images/serv-s4.png');">
-                     <span class="icon round-2 text-white">
-                        <i class="fa-solid fa-boxes-packing fa-2x" aria-hidden="true"></i>
-                     </span>
-                  </div>
-                  <h3 class="display-4"><a href="ecommerce-logistics.php">Ecommerce Logistics</a></h3>
-                           <p>Package forwarding for Amazon, eBay, Walmart and Best Buy purchases.</p>
-                           <div class="service-footer border-top">
-                              <a class="custom-btn" href="ecommerce-logistics.php"><span class="icon rounded-3"><i
-                                       class="fa fa-arrow-right"></i></span>View Details</a>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="swiper-slide">
-                        <div class="service-card2 round bg-info">
-                           <div class="serv-thumb" style="background-image: url('images/serv-s5.png');">
-                     <span class="icon round-2 text-white">
-                        <i class="fa-solid fa-truck-fast fa-2x" aria-hidden="true"></i>
-                     </span>
-                  </div>
-                  <h3 class="display-4"><a href="road-freight.php">Road Freight</a></h3>
-                           <p>Dependable road and last-mile delivery for local shipments.</p>
-                           <div class="service-footer border-top">
-                              <a class="custom-btn" href="road-freight.php"><span class="icon rounded-3"><i
-                                       class="fa fa-arrow-right"></i></span>View Details</a>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="swiper-slide">
-                        <div class="service-card2 round bg-info">
-                           <div class="serv-thumb" style="background-image: url('images/serv-s7.png');">
-                     <span class="icon round-2 text-white">
-                        <i class="fa-solid fa-house-chimney fa-2x" aria-hidden="true"></i>
-                     </span>
-                  </div>
-                  <h3 class="display-4"><a href="real-estate.php">Real Estate</a></h3>
-                           <p>Guidance and support for buying, selling and investing in property.</p>
-                           <div class="service-footer border-top">
-                              <a class="custom-btn" href="real-estate.php"><span class="icon rounded-3"><i
-                                       class="fa fa-arrow-right"></i></span>View Details</a>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="swiper-slide">
-                        <div class="service-card2 round bg-info">
-                           <div class="serv-thumb" style="background-image: url('images/serv-s8.png');">
-                     <span class="icon round-2 text-white">
-                        <i class="fa-solid fa-building-user fa-2x" aria-hidden="true"></i>
-                     </span>
-                  </div>
-                  <h3 class="display-4"><a href="property-management.php">Property Management</a></h3>
-                           <p>Day-to-day management so property owners can invest with confidence.</p>
-                           <div class="service-footer border-top">
-                              <a class="custom-btn" href="property-management.php"><span class="icon rounded-3"><i
-                                       class="fa fa-arrow-right"></i></span>View Details</a>
-                           </div>
-                        </div>
-                     </div>
+                     <?php endforeach; ?>
                   </div>
                </div>
             </div>
@@ -328,7 +239,7 @@ require 'partials/header.php';
          </div>
          <div class="row gy-4">
             <?php foreach ($group_companies as $company): ?>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-6">
                <div class="bg-white round p-4 h-100 d-flex flex-column">
                   <h3 class="display-5"><?php echo htmlspecialchars($company['name']); ?></h3>
                   <p class="text-primary fw-bold"><?php echo htmlspecialchars($company['tagline']); ?></p>
@@ -480,7 +391,7 @@ require 'partials/header.php';
                            <span><img src="images/tab-icon.png" alt="Icon"></span>
                            <h3 class="mt-3 h5">Ecommerce Logistics</h3>
                            <p>See how we forward packages from major online retailers.</p>
-                           <a class="link-btn" href="ecommerce-logistics.php">More Details <i
+                           <a class="link-btn" href="services.php#ecommerce-logistics">More Details <i
                                  class="fa fa-arrow-right"></i></a>
                         </div>
                      </div>
@@ -495,7 +406,7 @@ require 'partials/header.php';
                            <span><img src="images/tab-icon.png" alt="Icon"></span>
                            <h3 class="mt-3 h5">Real Estate &amp; Property Management</h3>
                            <p>Learn how our team supports owners, buyers and investors.</p>
-                           <a class="link-btn" href="real-estate.php">More Details <i
+                           <a class="link-btn" href="services.php#real-estate">More Details <i
                                  class="fa fa-arrow-right"></i></a>
                         </div>
                      </div>

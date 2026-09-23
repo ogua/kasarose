@@ -39,19 +39,16 @@ require 'partials/header.php';
 
                <h3 class="display-5 mt-5">About This Website</h3>
                <p>This website provides information about KASAROSE LOGISTICS' door-to-door freight, import &amp;
-                  export shipping, real estate and property management services, and about our sister companies
-                  Neoride Africa and KROSEMARKET. Submitting a contact or quote request through this website is an
-                  inquiry only
+                  export shipping, real estate and property management services, and about our sister company
+                  KROSEMARKET. Submitting a contact or quote request through this website is an inquiry only
                   &mdash; it is not a binding contract, order or reservation. Any shipping quote, service pricing
                   or engagement is confirmed separately, directly with our team.</p>
 
-               <h3 class="display-5 mt-5">Our Sister Companies</h3>
-               <p>KASAROSE LOGISTICS comprises three separately operated companies:</p>
+               <h3 class="display-5 mt-5">Our Sister Company</h3>
+               <p>KASAROSE LOGISTICS comprises two separately operated companies:</p>
                <ul class="ct-list">
                   <li><strong>KASAROSE LOGISTICS</strong> &mdash; door-to-door air and sea freight, ecommerce package
                      forwarding, import &amp; export shipping, real estate and property management (this website).</li>
-                  <li><strong>Neoride Africa</strong> &mdash; tricycle mobility and last-mile transport
-                     (<a href="<?php echo SITE_URL_NEORIDE; ?>" target="_blank" rel="noopener">neorideafrica.com</a>).</li>
                   <li><strong>KROSEMARKET</strong> &mdash; the group's multi-vendor ecommerce marketplace
                      (<a href="<?php echo SITE_URL_KROSEMARKET; ?>" target="_blank" rel="noopener">krosemarket.com</a>).</li>
                </ul>

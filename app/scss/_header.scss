@@ -355,20 +355,23 @@ Header Style*/
 
 	.navbar-brand {
 		img {
-			// The KASAROSE LOGISTICS lockup is a wide horizontal mark, so it is capped on
-			// width as well as height. The gutter sits on the image rather than the brand
-			// link, because a later rule in this file resets .navbar-brand's margin to 0.
+			// The nav's "KASAROSE"-only lockup (images/kasarose-logo-h-white.png) is a
+			// single line of text next to the icon, wider relative to its height than the
+			// full two-line "KASAROSE / LOGISTICS" mark used elsewhere on the site -- these
+			// caps are sized for that ~6.8:1 ratio so the mark renders at roughly the same
+			// height as before. The gutter sits on the image rather than the brand link,
+			// because a later rule in this file resets .navbar-brand's margin to 0.
 			max-height: 42px;
-			max-width: 178px;
+			max-width: 275px;
 			width: auto;
 			margin-right: 26px;
 
 			@include media-breakpoint-down(lg) {
-				max-width: 180px;
+				max-width: 270px;
 			}
 
 			@include media-breakpoint-down(md) {
-				max-width: 155px;
+				max-width: 240px;
 			}
 		}
 	}

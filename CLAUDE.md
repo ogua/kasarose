@@ -342,9 +342,27 @@ new submission mechanism.
 **SEO**: [partials/head.php](partials/head.php) auto-derives canonical URL, Open Graph/Twitter tags, and a
 `schema.org` Organization JSON-LD block from `SITE_URL` (in `includes/config.php`, currently the production
 domain `https://kasarose.com`) and each page's `$page_title`/`$meta_description` — don't hardcode per-page
-`<meta>`/canonical tags, just set those two variables like every other page does. Root-level
-[robots.txt](robots.txt) and [sitemap.xml](sitemap.xml) are static files listing the pages above (excluding
-`404.php` and `news-detail.php`, see above); add new pages to both when creating them.
+`<meta>`/canonical tags, just set those two variables like every other page does. A page can also optionally set,
+before requiring `head.php`: `$meta_robots` (default `'index, follow'` — `404.php` and news-detail.php's
+not-found branch set `'noindex, follow'`, since both can be reached at a URL that returns a real page), `$og_image`
+(default the group logo; news-detail.php overrides it with the post's own photo so a shared article link previews
+correctly — note this is separate from the Organization schema's `logo`, which is always the group lockup, never
+a per-page image) and `$og_type` (default `'website'`; news-detail.php sets `'article'`). `head.php` also
+auto-emits two more JSON-LD blocks when the page is indexable: a `BreadcrumbList` (skipped on the homepage, whose
+single-item trail isn't useful) built the same way as the canonical URL — Home, plus "Services" for any page in
+`$site_services`, plus "News" for `news-detail.php`, plus the page's own `$page_title` — and a `Service` block,
+automatic for every `$site_services` page from its existing `$page_title`/`$meta_description`, no per-page work
+needed. `faq.php` and news-detail.php each additionally emit their own `FAQPage`/`NewsArticle` JSON-LD inline
+(the FAQ one built from `$delivery_timeframes`/`QUOTE_RESPONSE_TIME`, the same data the accordion renders, so the
+two can't drift). **`$canonical_url` includes `?slug=...` for news-detail.php** — the one page identified by a
+query string rather than its path alone; before this every article shared one canonical/`og:url`
+(`news-detail.php` with no slug), which told search engines every post was a duplicate of the same content-less
+URL. If a future page is likewise identified by a query string, extend that same special case in `head.php`
+rather than letting it silently collapse to the bare path. Root-level [robots.txt](robots.txt) and
+[sitemap.xml](sitemap.xml) are static files listing the pages above (excluding `404.php` and `news-detail.php`,
+see above); add new pages to both when creating them. [.htaccess](.htaccess) routes a broken URL to `404.php`
+(`ErrorDocument 404`); `404.php` itself calls `http_response_code(404)` — without it, the branded 404 page would
+otherwise still answer with HTTP 200, a "soft 404" search engines treat as real indexable content.
 
 **Favicon**: generated from the logo's K icon mark (not the full wordmark, which is unreadable at 16px) via a
 one-off Pillow crop — see `images/favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png`,

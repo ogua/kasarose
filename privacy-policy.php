@@ -1,6 +1,6 @@
 <?php
 $page_title = 'Privacy Policy';
-$meta_description = 'Privacy Policy for the KASAROSE LOGISTICS website — what information we collect through our contact and quote forms, how we use it, and how it relates to our sister companies Neoride Africa and KROSEMARKET.';
+$meta_description = 'Privacy Policy for the KASAROSE LOGISTICS website — what information we collect through our contact and quote forms, how we use it, and how it relates to our sister company KROSEMARKET.';
 require 'partials/head.php';
 require 'partials/header.php';
 ?>
@@ -41,8 +41,6 @@ require 'partials/header.php';
                   operated, hold their own customer data and publish their own privacy policies on their own sites:
                </p>
                <ul class="ct-list">
-                  <li><strong>Neoride Africa</strong> &mdash; tricycle mobility and last-mile transport
-                     (<a href="<?php echo SITE_URL_NEORIDE; ?>" target="_blank" rel="noopener">neorideafrica.com</a>).</li>
                   <li><strong>KROSEMARKET</strong> &mdash; the group's ecommerce marketplace
                      (<a href="<?php echo SITE_URL_KROSEMARKET; ?>" target="_blank" rel="noopener">krosemarket.com</a>).
                      If you have shopped or sold there, that account and its order history are governed by the
@@ -78,9 +76,9 @@ require 'partials/header.php';
                   sell your information.</p>
 
                <p>Freight and shipping inquiries are handled by us directly. We share your information with
-                  another company in the group only where that is necessary to answer you &mdash; passing a mobility
-                  question to Neoride Africa, or a marketplace order question to KROSEMARKET. We share the minimum
-                  needed to handle the request, and marketing lists are never shared between group companies.</p>
+                  another company in the group only where that is necessary to answer you &mdash; for example,
+                  passing a marketplace order question to KROSEMARKET. We share the minimum needed to handle the
+                  request, and marketing lists are never shared between group companies.</p>
 
                <h3 class="display-5 mt-5">How We Store &amp; Protect Your Information</h3>
                <p>Form submissions are sent by email to our support team. We take reasonable steps to protect the

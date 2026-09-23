@@ -50,8 +50,7 @@ require 'partials/header.php';
                         <div class="accordion-body">
                            <p>KASAROSE LOGISTICS &mdash; known as KasaBazaar until 2026 &mdash; is the parent
                               group behind our own door-to-door freight, import &amp; export shipping, real estate
-                              and property management business, plus Neoride Africa (mobility) and KROSEMARKET
-                              (our ecommerce marketplace). See our
+                              and property management business, plus KROSEMARKET (our ecommerce marketplace). See our
                               <a href="our-companies.php">Our Companies</a> page for details on each.</p>
                         </div>
                      </div>
@@ -98,9 +97,9 @@ require 'partials/header.php';
                         data-bs-parent="#tv-accordion">
                         <div class="accordion-body">
                            <p>Yes &mdash; KASAROSE LOGISTICS offers real estate guidance alongside property management
-                              support. Visit our <a href="real-estate.php">Real Estate</a> and
-                              <a href="property-management.php">Property Management</a> pages, or
-                              <a href="contact.php">contact us</a> directly.</p>
+                              support. See our <a href="services.php#real-estate">Real Estate</a> and
+                              <a href="services.php#property-management">Property Management</a> briefings on our
+                              Services page, or <a href="contact.php">contact us</a> directly.</p>
                         </div>
                      </div>
                   </div>
@@ -114,8 +113,8 @@ require 'partials/header.php';
                      <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
                         data-bs-parent="#tv-accordion">
                         <div class="accordion-body">
-                           <p>Our companies serve clients across the United States and Ghana. Neoride Africa
-                              operates locally in Ejisu, Kumasi, and KROSEMARKET delivers to every region of Ghana.</p>
+                           <p>Our companies serve clients across the United States and Ghana, with KROSEMARKET
+                              delivering to every region of Ghana.</p>
                         </div>
                      </div>
                   </div>
@@ -164,6 +163,70 @@ require 'partials/header.php';
       </div>
    </section>
    <!-- FAQ Section End -->
+
+<?php
+// FAQPage JSON-LD. Answers are plain-text transcriptions of the accordion above —
+// Google only requires the schema to match the visible content semantically, not
+// byte-for-byte, so entities are decoded to plain characters here. The delivery
+// time-frame answer is built from $delivery_timeframes/QUOTE_RESPONSE_TIME (the same
+// data the accordion loops over) rather than retyped, so the two can't drift apart.
+$delivery_answer_parts = [];
+foreach ($delivery_timeframes as $tf) {
+    $delivery_answer_parts[] = html_entity_decode($tf['service'], ENT_QUOTES) . ': ' . html_entity_decode($tf['estimate'], ENT_QUOTES);
+}
+$delivery_answer = 'Estimated delivery time frames, measured from the date a shipment is collected or received by us: '
+    . implode('; ', $delivery_answer_parts)
+    . '. These are estimates and can be affected by customs clearance, carrier schedules and weather. Full details '
+    . 'are on our Delivery Policy page, and we confirm the delivery window for your specific shipment '
+    . QUOTE_RESPONSE_TIME . ' of your quote request.';
+
+$faq_items = [
+    [
+        'What is KASAROSE LOGISTICS?',
+        'KASAROSE LOGISTICS — known as KasaBazaar until 2026 — is the parent group behind our own '
+            . 'door-to-door freight, import & export shipping, real estate and property management business, '
+            . 'plus KROSEMARKET (our ecommerce marketplace). See our Our Companies '
+            . 'page for details on each.',
+    ],
+    [
+        'How can I track my shipment?',
+        'Enter your tracking number or shipment reference on our Tracking page for a live status update.',
+    ],
+    [
+        'How do I request a shipping quote?',
+        'Use our Request a Quote form and tell us about your shipment — service type, weight, and '
+            . 'origin/destination. Our team will follow up by phone or email.',
+    ],
+    [
+        'Do you handle real estate and property management?',
+        'Yes — KASAROSE LOGISTICS offers real estate guidance alongside property management support. Visit our '
+            . 'Real Estate and Property Management pages, or contact us directly.',
+    ],
+    [
+        'Where does KASAROSE LOGISTICS operate?',
+        'Our companies serve clients across the United States and Ghana, with KROSEMARKET delivering to '
+            . 'every region of Ghana.',
+    ],
+    [
+        'How do I get in touch?',
+        'Call, email, or use our contact form — details for both our US and Ghana teams are on the Contact page.',
+    ],
+    ['How long does delivery take?', $delivery_answer],
+];
+
+$faq_json = json_encode([
+    '@context'   => 'https://schema.org',
+    '@type'      => 'FAQPage',
+    'mainEntity' => array_map(static function (array $qa): array {
+        return [
+            '@type'          => 'Question',
+            'name'           => $qa[0],
+            'acceptedAnswer' => ['@type' => 'Answer', 'text' => $qa[1]],
+        ];
+    }, $faq_items),
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
+?>
+<script type="application/ld+json"><?php echo $faq_json; ?></script>
 
 <?php
 $cta_eyebrow = 'Still Have Questions?';

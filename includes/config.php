@@ -23,8 +23,14 @@ define('SITE_URL', 'https://kasarose.com'); // production domain — used for ca
 // rather than a hardcoded URL, so a domain change is a one-line edit here.
 // The same roster is mirrored in the other repositories — see the
 // "Group of Companies" section of CLAUDE.md before changing any of them.
+//
+// Neoride Africa (neorideafrica.com) is still a real sister company, but as of
+// 2026-09 it is deliberately no longer shown on this site — not in the roster
+// below, the footer, the homepage teaser, or the schema.org block in
+// partials/head.php. This is a display decision on this site only; it does not
+// by itself mean Neoride's own site or the back office have been updated to
+// match, so treat those as a separate, not-yet-done sweep.
 define('SITE_URL_KROSEMARKET', 'https://krosemarket.com');
-define('SITE_URL_NEORIDE', 'https://neorideafrica.com');
 
 // The back-office Laravel application (Projects/kasabazaar). It owns the shipment
 // database this site reads for tracking, and serves the uploaded blog images that
@@ -68,8 +74,10 @@ define('CONTACT_MAP_EMBED', 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!
 
 // The group's companies, shared by index.php (teaser) and our-companies.php (full cards).
 // Order matters — it is the order the cards render in on both pages.
-// Three companies since August 2026; the copy that counts them lives in
-// our-companies.php, about.php, faq.php and partials/footer.php.
+// Two companies shown here since 2026-09; the copy that counts them lives in
+// our-companies.php, about.php, faq.php and partials/footer.php. Neoride Africa
+// is a real sister company but is deliberately not listed here — see the note
+// above SITE_URL_KROSEMARKET.
 $group_companies = [
     [
         'name' => 'KASAROSE LOGISTICS',
@@ -79,15 +87,6 @@ $group_companies = [
         'url_label' => 'View Our Services',
         'external' => false,
         'logo' => 'images/kasarose-logistics-logo.png',
-    ],
-    [
-        'name' => 'Neoride Africa',
-        'tagline' => "Driving Africa's Mobility Revolution.",
-        'description' => 'A tricycle mobility and transport company operating in Ghana since 2025, focused on affordable rides, last-mile connectivity, and youth employment.',
-        'url' => SITE_URL_NEORIDE,
-        'url_label' => 'Visit neorideafrica.com',
-        'external' => true,
-        'logo' => null,
     ],
     [
         'name' => 'KROSEMARKET',
@@ -129,19 +128,59 @@ $delivery_timeframes = [
     ],
 ];
 
-// The service pages, in the order they appear in the nav dropdown, the footer's
-// "Our Services" column, the offcanvas canvas-menu and each service page's own
-// sidebar. Every one of those lists used to be hand-maintained and had drifted:
-// warehousing.php was in the nav but missing from the footer and the canvas menu,
-// and the five freight pages each carried their own copy of the same array.
+// The group's services, in the order they appear on services.php (one page, one
+// briefing section per service, as of 2026-09 — the seven used to be separate
+// pages, each with its own detail page and a hand-maintained copy of this same
+// list in its sidebar; that drifted, e.g. warehousing.php was in the nav but
+// missing from the footer and the canvas menu). This one array now also drives
+// the footer's "Our Services" column, the offcanvas canvas-menu and the
+// homepage's service teaser, all linking to services.php#<slug> — add a service
+// here, not in a template. The longer per-service briefing text lives in
+// services.php itself, since nothing else needs it.
 $site_services = [
-    'air-freight.php'        => 'Air Freight',
-    'ocean-freight.php'      => 'Ocean Freight',
-    'road-freight.php'       => 'Road Freight',
-    'warehousing.php'        => 'Warehousing',
-    'ecommerce-logistics.php' => 'Ecommerce Logistics',
-    'real-estate.php'        => 'Real Estate',
-    'property-management.php' => 'Property Management',
+    'air-freight' => [
+        'label'   => 'Air Freight',
+        'tagline' => 'Fast, reliable air freight for time-sensitive international shipments.',
+        'icon'    => 'fa-plane-up',
+        'thumb'   => 'images/serv-s3.png',
+    ],
+    'ocean-freight' => [
+        'label'   => 'Ocean Freight',
+        'tagline' => 'Cost-effective sea freight for bulk and oversized shipments.',
+        'icon'    => 'fa-ship',
+        'thumb'   => 'images/serv-s6.png',
+    ],
+    'road-freight' => [
+        'label'   => 'Road Freight',
+        'tagline' => 'Dependable road transport and last-mile delivery for local shipments.',
+        'icon'    => 'fa-truck-fast',
+        'thumb'   => 'images/serv-s5.png',
+    ],
+    'warehousing' => [
+        'label'   => 'Warehousing',
+        'tagline' => 'Secure storage and inventory support — coming soon from our group.',
+        'icon'    => 'fa-warehouse',
+        'thumb'   => 'images/serv-s9.png',
+        'badge'   => 'Coming Soon',
+    ],
+    'ecommerce-logistics' => [
+        'label'   => 'Ecommerce Logistics',
+        'tagline' => 'Package forwarding for Amazon, eBay, Walmart and Best Buy purchases.',
+        'icon'    => 'fa-boxes-packing',
+        'thumb'   => 'images/serv-s4.png',
+    ],
+    'real-estate' => [
+        'label'   => 'Real Estate',
+        'tagline' => 'Guidance and support for buying, selling and investing in property.',
+        'icon'    => 'fa-house-chimney',
+        'thumb'   => 'images/serv-s7.png',
+    ],
+    'property-management' => [
+        'label'   => 'Property Management',
+        'tagline' => 'Day-to-day management so property owners can invest with confidence.',
+        'icon'    => 'fa-building-user',
+        'thumb'   => 'images/serv-s8.png',
+    ],
 ];
 
 /**

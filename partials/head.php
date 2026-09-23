@@ -6,11 +6,55 @@ require_once __DIR__ . '/../includes/config.php';
 
 $page_title = $page_title ?? SITE_NAME;
 $meta_description = $meta_description ?? 'KASAROSE LOGISTICS — door-to-door air and sea freight between the US and Ghana, ecommerce package forwarding, shipment tracking, real estate and property management.';
+// A page sets this before requiring head.php only to keep an unpublished or
+// not-found page (news-detail.php's missing-slug branch, 404.php) out of the
+// index — everything else stays 'index, follow'. Also gates the BreadcrumbList
+// and Service JSON-LD below, so we never emit rich-result markup for a page
+// we've just told search engines to ignore.
+$meta_robots = $meta_robots ?? 'index, follow';
 
 $current_path = basename($_SERVER['SCRIPT_NAME']);
 $canonical_url = SITE_URL . '/' . ($current_path === 'index.php' ? '' : $current_path);
-$og_image = SITE_URL . '/images/kasarose-logistics-logo.png';
+// news-detail.php is the one page identified by a query string, not its path alone —
+// every article was sharing the bare news-detail.php canonical/og:url before this,
+// which told search engines every post was a duplicate of the same content-less URL.
+if ($current_path === 'news-detail.php' && trim($_GET['slug'] ?? '') !== '') {
+    $canonical_url .= '?slug=' . rawurlencode(trim($_GET['slug']));
+}
+// The Organization schema's own logo — always the group lockup, never overridden by
+// a page, unlike $og_image below (which news-detail.php does override per article).
+$org_logo = SITE_URL . '/images/kasarose-logistics-logo.png';
+// A page (e.g. news-detail.php) sets $og_image before requiring head.php when it has
+// a more specific image than the group logo — a shared article link should preview
+// with that article's photo, not the site-wide lockup.
+$og_image = $og_image ?? $org_logo;
+// news-detail.php sets this to 'article' for a real post; every other page is 'website'.
+$og_type = $og_type ?? 'website';
 $full_title = htmlspecialchars($page_title) . ' | ' . SITE_NAME;
+
+// BreadcrumbList JSON-LD, derived from the same data every page already renders
+// visible breadcrumbs from — never hand-listed per page. Skipped on the homepage
+// (a single-item trail isn't useful) and on any noindexed page. services.php gets
+// no special case here — it's one page like any other now, not seven; it emits
+// its own Service JSON-LD per briefing section below, the same way faq.php emits
+// its own FAQPage block.
+$breadcrumb_json = null;
+if ($meta_robots === 'index, follow' && $current_path !== 'index.php') {
+    $breadcrumb_items = [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => SITE_URL . '/'],
+    ];
+    if ($current_path === 'news-detail.php') {
+        $breadcrumb_items[] = ['@type' => 'ListItem', 'position' => 2, 'name' => 'News', 'item' => SITE_URL . '/news.php'];
+        $breadcrumb_items[] = ['@type' => 'ListItem', 'position' => 3, 'name' => $page_title, 'item' => $canonical_url];
+    } else {
+        $breadcrumb_items[] = ['@type' => 'ListItem', 'position' => 2, 'name' => $page_title, 'item' => $canonical_url];
+    }
+    $breadcrumb_json = json_encode([
+        '@context'        => 'https://schema.org',
+        '@type'           => 'BreadcrumbList',
+        'itemListElement' => $breadcrumb_items,
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,13 +64,14 @@ $full_title = htmlspecialchars($page_title) . ' | ' . SITE_NAME;
    <meta http-equiv="x-ua-compatible" content="ie=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    <meta name="description" content="<?php echo htmlspecialchars($meta_description); ?>">
+   <meta name="robots" content="<?php echo htmlspecialchars($meta_robots); ?>">
    <meta name="author" content="KASAROSE LOGISTICS">
    <meta name="theme-color" content="#052240">
    <link rel="canonical" href="<?php echo htmlspecialchars($canonical_url); ?>">
    <title><?php echo $full_title; ?></title>
 
    <!-- Open Graph / Facebook -->
-   <meta property="og:type" content="website">
+   <meta property="og:type" content="<?php echo htmlspecialchars($og_type); ?>">
    <meta property="og:site_name" content="<?php echo SITE_NAME; ?>">
    <meta property="og:url" content="<?php echo htmlspecialchars($canonical_url); ?>">
    <meta property="og:title" content="<?php echo $full_title; ?>">
@@ -53,7 +98,12 @@ $full_title = htmlspecialchars($page_title) . ' | ' . SITE_NAME;
       "name": "<?php echo SITE_NAME; ?>",
       "alternateName": "KasaBazaar Group of Companies",
       "url": "<?php echo SITE_URL; ?>",
-      "logo": "<?php echo htmlspecialchars($og_image); ?>",
+      "logo": "<?php echo htmlspecialchars($org_logo); ?>",
+      "address": {
+         "@type": "PostalAddress",
+         "streetAddress": "<?php echo htmlspecialchars(CONTACT_ADDRESS_GH); ?>",
+         "addressCountry": "GH"
+      },
       "contactPoint": [
          {
             "@type": "ContactPoint",
@@ -71,22 +121,20 @@ $full_title = htmlspecialchars($page_title) . ' | ' . SITE_NAME;
       "email": "<?php echo CONTACT_EMAIL_SUPPORT; ?>",
       "subOrganization": [
          {
-            "@type": "Organization",
-            "name": "Neoride Africa",
-            "url": "<?php echo SITE_URL_NEORIDE; ?>"
-         },
-         {
             "@type": "OnlineStore",
             "name": "KROSEMARKET",
             "url": "<?php echo SITE_URL_KROSEMARKET; ?>"
          }
       ],
       "sameAs": [
-         "<?php echo SITE_URL_NEORIDE; ?>",
          "<?php echo SITE_URL_KROSEMARKET; ?>"
       ]
    }
    </script>
+
+   <?php if ($breadcrumb_json !== null): ?>
+   <script type="application/ld+json"><?php echo $breadcrumb_json; ?></script>
+   <?php endif; ?>
 
    <!-- Google Fonts -->
    <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -10,12 +10,19 @@ if ($post === null) {
     http_response_code(404);
     $page_title = 'Article Not Found';
     $meta_description = 'The article you were looking for could not be found.';
+    $meta_robots = 'noindex, follow';
 } else {
     $page_title = $post['title'];
     // The post's own summary is a better meta description than anything generic.
     $meta_description = trim((string) $post['description']) !== ''
         ? mb_substr(strip_tags($post['description']), 0, 300)
         : 'News from KASAROSE LOGISTICS.';
+    $og_type = 'article';
+    // A shared article link should preview with that article's own photo, not the
+    // site-wide logo head.php falls back to when this isn't set.
+    if (!empty($post['img'])) {
+        $og_image = kr_blog_image($post['img']);
+    }
 }
 
 require 'partials/head.php';
@@ -105,6 +112,45 @@ require 'partials/header.php';
                         </a>
                      </div>
                   </article>
+
+                  <?php
+                  // NewsArticle JSON-LD. Mirrors what's actually rendered above rather than
+                  // inventing anything: same title/description/image, the same "postedby"
+                  // byline shown in entry-meta (only present when the field is filled in —
+                  // see the fa-user line above), and $post['keywords'], which the Filament
+                  // admin lets staff fill in but which nothing on this site surfaced until now.
+                  $article_data = [
+                      '@context'      => 'https://schema.org',
+                      '@type'         => 'NewsArticle',
+                      'headline'      => $post['title'],
+                      'description'  => $meta_description,
+                      'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $canonical_url],
+                      'publisher'    => [
+                          '@type' => 'Organization',
+                          'name'  => SITE_NAME,
+                          'logo'  => ['@type' => 'ImageObject', 'url' => $org_logo],
+                      ],
+                  ];
+                  if (!empty($post['img'])) {
+                      $article_data['image'] = [kr_blog_image($post['img'])];
+                  }
+                  if ($published = kr_date($post['posted_at'], 'c')) {
+                      $article_data['datePublished'] = $published;
+                  }
+                  $article_data['dateModified'] = kr_date($post['updated_at'] ?? null, 'c') ?: ($published ?: null);
+                  if ($article_data['dateModified'] === null) {
+                      unset($article_data['dateModified']);
+                  }
+                  if (!empty($post['postedby'])) {
+                      $article_data['author'] = ['@type' => 'Person', 'name' => $post['postedby']];
+                  } else {
+                      $article_data['author'] = ['@type' => 'Organization', 'name' => SITE_NAME];
+                  }
+                  if (!empty($post['keywords'])) {
+                      $article_data['keywords'] = $post['keywords'];
+                  }
+                  ?>
+                  <script type="application/ld+json"><?php echo json_encode($article_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG); ?></script>
                <?php endif; ?>
 
             </div>

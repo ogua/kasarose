@@ -1,0 +1,4 @@
+# Route a broken URL to our own 404 page (404.php sets the real HTTP 404 status
+# itself — see the http_response_code() call there) instead of the host's generic
+# error page, so a mistyped or removed link still lands on branded, on-site content.
+ErrorDocument 404 /404.php

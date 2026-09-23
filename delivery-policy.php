@@ -99,9 +99,9 @@ require 'partials/header.php';
                   the group's ecommerce marketplace. Marketplace orders are delivered within Ghana on their own
                   timeframes &mdash; typically 1&ndash;3 business days in Accra and Kumasi, 3&ndash;7 business days
                   in other regions &mdash; and are governed by the KROSEMARKET delivery and returns policies.</p>
-               <p>We carry a share of those marketplace deliveries on KROSEMARKET's behalf, and Neoride Africa
-                  handles last-mile drops in Kumasi and Ejisu, but KROSEMARKET remains the point of contact for
-                  anything ordered there. Raise marketplace delivery questions with KROSEMARKET rather than with us.</p>
+               <p>We carry a share of those marketplace deliveries on KROSEMARKET's behalf, but KROSEMARKET remains
+                  the point of contact for anything ordered there. Raise marketplace delivery questions with
+                  KROSEMARKET rather than with us.</p>
 
                <h3 class="display-5 mt-5">Changes to This Policy</h3>
                <p>We may update this Delivery Policy from time to time. Changes will be posted on this page with an

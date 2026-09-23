@@ -1,6 +1,10 @@
 <?php
+// A missing URL must answer 404, not 200 — otherwise search engines index this page
+// itself as real content under whatever broken URL served it (a "soft 404").
+http_response_code(404);
 $page_title = 'Page Not Found';
 $meta_description = 'The page you were looking for could not be found on the KASAROSE LOGISTICS website.';
+$meta_robots = 'noindex, follow';
 require 'partials/head.php';
 require 'partials/header.php';
 ?>

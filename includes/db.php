@@ -234,7 +234,7 @@ function kr_blog_post(string $slug): ?array
     }
 
     $sql = "SELECT b.slug, b.title, b.description, b.content, b.img, b.keywords,
-                   b.postedby, b.views, b.`references`,
+                   b.postedby, b.views, b.`references`, b.updated_at,
                    COALESCE(b.published_at, b.created_at) AS posted_at,
                    COALESCE(c.cat, '') AS category
             FROM blogs b

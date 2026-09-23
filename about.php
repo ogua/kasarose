@@ -1,6 +1,6 @@
 <?php
 $page_title = 'About Us';
-$meta_description = 'About KASAROSE LOGISTICS — door-to-door freight, real estate, property management, and our sister companies Neoride Africa and KROSEMARKET.';
+$meta_description = 'About KASAROSE LOGISTICS — door-to-door freight, real estate, property management, and our sister company KROSEMARKET.';
 require 'partials/head.php';
 require 'partials/header.php';
 ?>
@@ -46,9 +46,9 @@ require 'partials/header.php';
                         <h3 class="display-5">Group Companies</h3>
                         <div class="d-flex align-items-center justify-content-between border-bottom">
                            <i class="fa-solid fa-sitemap fa-2x text-primary" aria-hidden="true"></i>
-                           <span class="purecounter display-1" data-purecounter-end="3">3</span>
+                           <span class="purecounter display-1" data-purecounter-end="2">2</span>
                         </div>
-                        <p>KASAROSE LOGISTICS, Neoride Africa and KROSEMARKET, working as one group.</p>
+                        <p>KASAROSE LOGISTICS and KROSEMARKET, working as one group.</p>
                      </div>
                   </div>
                   <div class="col-lg-6 col-sm-6">
@@ -230,10 +230,10 @@ require 'partials/header.php';
             <div class="col-xl-7">
                <div class="about-content3">
                   <span class="sub-title2 fadeInUp single">About Our Company</span>
-                  <h2 class="sec-title">A group that grew from one idea into three companies.</h2>
+                  <h2 class="sec-title">A group that grew from one idea into two companies.</h2>
                   <p>KASAROSE LOGISTICS began with door-to-door import &amp; export shipping and has
-                     grown into a diversified group spanning freight, real estate, property management, urban
-                     mobility (Neoride Africa) and ecommerce (KROSEMARKET) across the United States and Ghana.</p>
+                     grown into a diversified group spanning freight, real estate, property management and
+                     ecommerce (KROSEMARKET) across the United States and Ghana.</p>
 
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                      <li class="nav-item" role="presentation">
@@ -280,9 +280,8 @@ require 'partials/header.php';
                            </div>
                            <div class="tab-txt">
                               <p>KASAROSE LOGISTICS handles freight, import &amp; export shipping, real estate and
-                                 property management directly. Neoride Africa is our mobility company in Ghana, and
-                                 KROSEMARKET is our online marketplace, where vetted Ghanaian vendors sell direct to
-                                 shoppers nationwide.</p>
+                                 property management directly. KROSEMARKET is our online marketplace, where vetted
+                                 Ghanaian vendors sell direct to shoppers nationwide.</p>
                            </div>
                         </div>
                         <a class="link-btn" href="our-companies.php">See Our Companies <i class="fa fa-arrow-right"></i></a>
@@ -432,13 +431,12 @@ require 'partials/header.php';
                <div class="why-txt">
                   <div class="sec-intro">
                      <span class="sub-title2 fadeInUp single">Why We're Different</span>
-                     <h2 class="sec-title text-white">One Group. Three Ways We Can Help.</h2>
+                     <h2 class="sec-title text-white">One Group. Two Ways We Can Help.</h2>
                      <p>Whichever of our companies you work with, you get the same commitment to reliable,
                         honest service.</p>
                   </div>
                   <ul class="check">
                      <li>Door-to-door freight, real estate and property management from KASAROSE LOGISTICS</li>
-                     <li>Tricycle mobility solutions from Neoride Africa in Ghana</li>
                      <li>Nationwide online shopping from KROSEMARKET</li>
                   </ul>
                   <div class="quick-call d-flex align-items-center">
