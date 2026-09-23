@@ -116,7 +116,7 @@ $service_briefs = [
 // separate pages, each picking up a Service block automatically in head.php;
 // now that it's briefing sections on one page, it builds its own list here the
 // same way faq.php builds its own FAQPage block from the data it renders from.
-$services_json = json_encode(array_values(array_map(function ($slug) use ($site_services, $service_briefs) {
+$services_graph = array_map(function ($slug) use ($site_services) {
     return [
         '@type'       => 'Service',
         'name'        => $site_services[$slug]['label'],
@@ -125,11 +125,11 @@ $services_json = json_encode(array_values(array_map(function ($slug) use ($site_
         'areaServed'  => ['United States', 'Ghana'],
         'url'         => SITE_URL . '/services.php#' . $slug,
     ];
-}, array_keys($site_services))), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
+}, array_keys($site_services));
+$services_json = json_encode(['@context' => 'https://schema.org', '@graph' => $services_graph],
+    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
 ?>
-   <script type="application/ld+json">
-   <?php echo json_encode(['@context' => 'https://schema.org', '@graph' => json_decode($services_json)], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG); ?>
-   </script>
+   <script type="application/ld+json"><?php echo $services_json; ?></script>
 
    <!-- Promo Section Start -->
    <section class="promo-sec bg-cover jarallax" data-jarallax data-speed=".4">
@@ -166,8 +166,9 @@ $services_json = json_encode(array_values(array_map(function ($slug) use ($site_
          <!-- Quick jump to each briefing below; replaces the old per-page sidebar. -->
          <nav class="d-flex flex-wrap justify-content-center gap-2 mb-5" aria-label="Jump to a service">
             <?php foreach ($site_services as $slug => $svc): ?>
-            <a href="#<?php echo $slug; ?>" class="btn btn-outline btn-xs">
-               <i class="fa-solid <?php echo $svc['icon']; ?> me-2" aria-hidden="true"></i><?php echo $svc['label']; ?>
+            <a href="#<?php echo $slug; ?>"
+               class="d-inline-flex align-items-center gap-2 bg-white round px-4 py-2 text-dark fw-semibold text-decoration-none">
+               <i class="fa-solid <?php echo $svc['icon']; ?> text-primary" aria-hidden="true"></i><?php echo $svc['label']; ?>
             </a>
             <?php endforeach; ?>
          </nav>

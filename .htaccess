@@ -1,3 +1,16 @@
+# The seven service detail pages were consolidated into one page (services.php,
+# one briefing section per service) in 2026-09. Redirect their old URLs to the
+# matching anchor so existing links and search results still land on the right
+# content instead of a 404. Keep this in sync with the slugs in $site_services
+# (includes/config.php) if a service is ever renamed.
+Redirect 301 /air-freight.php /services.php#air-freight
+Redirect 301 /ocean-freight.php /services.php#ocean-freight
+Redirect 301 /road-freight.php /services.php#road-freight
+Redirect 301 /warehousing.php /services.php#warehousing
+Redirect 301 /ecommerce-logistics.php /services.php#ecommerce-logistics
+Redirect 301 /real-estate.php /services.php#real-estate
+Redirect 301 /property-management.php /services.php#property-management
+
 # Route a broken URL to our own 404 page (404.php sets the real HTTP 404 status
 # itself — see the http_response_code() call there) instead of the host's generic
 # error page, so a mistyped or removed link still lands on branded, on-site content.
