@@ -122,7 +122,7 @@ if ($meta_robots === 'index, follow' && $current_path !== 'index.php') {
       "subOrganization": [
          {
             "@type": "OnlineStore",
-            "name": "KROSEMARKET",
+            "name": "KASAROSEMARKET",
             "url": "<?php echo SITE_URL_KROSEMARKET; ?>"
          }
       ],
