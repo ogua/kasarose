@@ -93,15 +93,15 @@ require 'partials/header.php';
                   original retail order is the retailer's responsibility up to the point we receive it; from there,
                   the same forwarding, tracking and delay handling described above applies.</p>
 
-               <h3 class="display-5 mt-5">Orders Placed on KROSEMARKET</h3>
+               <h3 class="display-5 mt-5">Orders Placed on KASAROSE MARKET</h3>
                <p><strong>This policy does not cover orders bought on
-                  <a href="<?php echo SITE_URL_KROSEMARKET; ?>" target="_blank" rel="noopener">KROSEMARKET</a></strong>,
+                  <a href="<?php echo SITE_URL_KASAROSE_MARKET; ?>" target="_blank" rel="noopener">KASAROSE MARKET</a></strong>,
                   the group's ecommerce marketplace. Marketplace orders are delivered within Ghana on their own
                   timeframes &mdash; typically 1&ndash;3 business days in Accra and Kumasi, 3&ndash;7 business days
-                  in other regions &mdash; and are governed by the KROSEMARKET delivery and returns policies.</p>
-               <p>We carry a share of those marketplace deliveries on KROSEMARKET's behalf, but KROSEMARKET remains
+                  in other regions &mdash; and are governed by the KASAROSE MARKET delivery and returns policies.</p>
+               <p>We carry a share of those marketplace deliveries on KASAROSE MARKET's behalf, but KASAROSE MARKET remains
                   the point of contact for anything ordered there. Raise marketplace delivery questions with
-                  KROSEMARKET rather than with us.</p>
+                  KASAROSE MARKET rather than with us.</p>
 
                <h3 class="display-5 mt-5">Changes to This Policy</h3>
                <p>We may update this Delivery Policy from time to time. Changes will be posted on this page with an

@@ -50,7 +50,7 @@ require 'partials/header.php';
                         <div class="accordion-body">
                            <p>KASAROSE LOGISTICS &mdash; known as KasaBazaar until 2026 &mdash; is the parent
                               group behind our own door-to-door freight, import &amp; export shipping, real estate
-                              and property management business, plus KROSEMARKET (our ecommerce marketplace). See our
+                              and property management business, plus KASAROSE MARKET (our ecommerce marketplace). See our
                               <a href="our-companies.php">Our Companies</a> page for details on each.</p>
                         </div>
                      </div>
@@ -113,7 +113,7 @@ require 'partials/header.php';
                      <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
                         data-bs-parent="#tv-accordion">
                         <div class="accordion-body">
-                           <p>Our companies serve clients across the United States and Ghana, with KROSEMARKET
+                           <p>Our companies serve clients across the United States and Ghana, with KASAROSE MARKET
                               delivering to every region of Ghana.</p>
                         </div>
                      </div>
@@ -185,7 +185,7 @@ $faq_items = [
         'What is KASAROSE LOGISTICS?',
         'KASAROSE LOGISTICS — known as KasaBazaar until 2026 — is the parent group behind our own '
             . 'door-to-door freight, import & export shipping, real estate and property management business, '
-            . 'plus KROSEMARKET (our ecommerce marketplace). See our Our Companies '
+            . 'plus KASAROSE MARKET (our ecommerce marketplace). See our Our Companies '
             . 'page for details on each.',
     ],
     [
@@ -204,7 +204,7 @@ $faq_items = [
     ],
     [
         'Where does KASAROSE LOGISTICS operate?',
-        'Our companies serve clients across the United States and Ghana, with KROSEMARKET delivering to '
+        'Our companies serve clients across the United States and Ghana, with KASAROSE MARKET delivering to '
             . 'every region of Ghana.',
     ],
     [

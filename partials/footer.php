@@ -12,7 +12,7 @@
                      </a>
                   </div>
                   <p>KASAROSE LOGISTICS: door-to-door air and sea freight, ecommerce package forwarding,
-                     real estate and property management &mdash; alongside our sister company KROSEMARKET.</p>
+                     real estate and property management &mdash; alongside our sister company KASAROSE MARKET.</p>
                </div>
             </div>
             <div class="col-lg-2 col-md-4 col-sm-6">
@@ -36,7 +36,7 @@
                   <h3 class="widget-title">Our Companies</h3>
                   <ul>
                      <li><a href="our-companies.php">KASAROSE LOGISTICS</a></li>
-                     <li><a href="<?php echo SITE_URL_KROSEMARKET; ?>" target="_blank" rel="noopener">KROSEMARKET</a></li>
+                     <li><a href="<?php echo SITE_URL_KASAROSE_MARKET; ?>" target="_blank" rel="noopener">KASAROSE MARKET</a></li>
                   </ul>
                </div>
             </div>

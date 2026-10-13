@@ -28,12 +28,11 @@ data** below. rddshipping.com should eventually redirect to this site's equivale
 The group's remaining sister companies — referenced throughout the site (home page,
 [our-companies.php](our-companies.php), footer, legal pages) but **not part of this repo** — are:
 - **Neoride Africa** (neorideafrica.com) — the group's mobility company (tricycle transport in Ghana).
-- **KROSEMARKET** (krosemarket.com) — the group's multi-vendor ecommerce marketplace, added to the group in
-  August 2026. It has been branded *KasaBazaar Market*, then *KASAROSE*, then *KASAROSE Marketplace*, before
-  settling on **KROSEMARKET**; all of those are stale copy now. Because the marketplace's name no longer starts
-  with "KASAROSE", bare "KASAROSE" unambiguously means the parent group everywhere on this site — the earlier
-  "always write KASAROSE Marketplace, never bare KASAROSE" disambiguation rule no longer applies and should not
-  be reintroduced.
+- **KASAROSE MARKET** (kasarosemarket.com — domain not yet confirmed) — the group's multi-vendor ecommerce
+  marketplace (repo `Projects/website/kmarket`). It has been branded *KasaBazaar Market*, *KASAROSE*, *KASAROSE
+  Marketplace* and *KROSEMARKET*; all of those are stale copy now. Because the name starts with "KASAROSE",
+  always write the marketplace in full as **KASAROSE MARKET**; bare "KASAROSE" on this site means the parent,
+  KASAROSE LOGISTICS.
 
 ## Group of Companies — cross-site sync (IMPORTANT)
 
@@ -44,7 +43,7 @@ navigation, footers and legal pages — plus one back-office application that is
 |---|---|---|---|
 | **KASAROSE LOGISTICS** | This site — group site, freight, real estate, property management | this repo | Plain PHP + Bootstrap, Gulp/SCSS |
 | Neoride Africa | Tricycle mobility, last-mile transport | `Projects/neoride` | Plain PHP template |
-| KROSEMARKET | Ecommerce marketplace | `Projects/website/kmarket` | Laravel 12 + Livewire + Filament 4 |
+| KASAROSE MARKET | Ecommerce marketplace | `Projects/website/kmarket` | Laravel 12 + Livewire + Filament 4 |
 | *(back-office, not a sibling site)* `Projects/kasabazaar` | Filament admin, portals, mobile API, shipment DB | Laravel 11 + Filament 3 |
 
 (All four live under `C:/xampp/htdocs/`.)
@@ -54,8 +53,8 @@ template — read it from the roster.**
 
 | Repo | Roster file |
 |---|---|
-| this repo (here) | [includes/config.php](includes/config.php) — `$group_companies`, `SITE_URL_KROSEMARKET`, `SITE_URL_NEORIDE` |
-| kmarket (KROSEMARKET) | `config/group.php` |
+| this repo (here) | [includes/config.php](includes/config.php) — `$group_companies`, `SITE_URL_KASAROSE_MARKET`, `SITE_URL_NEORIDE` |
+| kmarket (KASAROSE MARKET) | `config/group.php` |
 | neoride | `parts/group_companies.php` |
 | kasabazaar (back-office) | `config/group.php` — still describes the pre-absorption four-company group as of this writing; **not yet updated**, see the sweep note below |
 
@@ -72,8 +71,8 @@ Changes that always require the cross-repo sweep:
 - Changing any company's production domain (edit the `SITE_URL_*` constants, never a template).
 - Any edit to [privacy-policy.php](privacy-policy.php), [terms.php](terms.php) or
   [delivery-policy.php](delivery-policy.php) — each names the other companies and describes what data or work
-  passes between them. If this site's privacy policy says a marketplace order question goes to KROSEMARKET,
-  KROSEMARKET's own privacy policy must describe the same flow from its side.
+  passes between them. If this site's privacy policy says a marketplace order question goes to KASAROSE MARKET,
+  KASAROSE MARKET's own privacy policy must describe the same flow from its side.
 - Changing the operational relationship between companies (who carries what, who is the point of contact).
 - Changing shared contact details (the `CONTACT_*` constants here are the group's published numbers and are
   mirrored in the other repos' contact blocks).
@@ -89,20 +88,20 @@ one; reconcile them before relying on their content.
 ### Where the cross-links surface here
 
 - [includes/config.php](includes/config.php) — the roster plus the `SITE_URL_*` constants every outbound link uses.
-- [our-companies.php](our-companies.php) — one full section per company; KROSEMARKET's section is last.
+- [our-companies.php](our-companies.php) — one full section per company; KASAROSE MARKET's section is last.
 - [index.php](index.php) — the teaser grid loops `$group_companies` (three-up: `col-lg-4 col-md-6`).
 - [partials/footer.php](partials/footer.php) — the "Our Companies" link column and the about blurb.
 - [partials/head.php](partials/head.php) — the `schema.org` `Organization` JSON-LD carries `subOrganization` and
-  `sameAs` entries for the two sister companies (Neoride Africa, KROSEMARKET). Adding or removing a company means
+  `sameAs` entries for the two sister companies (Neoride Africa, KASAROSE MARKET). Adding or removing a company means
   editing this too.
 - [faq.php](faq.php), [about.php](about.php) — prose that enumerates the companies.
 
 ### Note on delivery policy scope
 
 [delivery-policy.php](delivery-policy.php) covers **freight arranged through KASAROSE LOGISTICS only** (which now
-includes the door-to-door freight formerly run as RDD Shipping). Orders bought on KROSEMARKET are governed by
-KROSEMARKET's own delivery and returns policies, and that carve-out is stated explicitly on the page. Do not fold
-marketplace timeframes into `$delivery_timeframes` here — KROSEMARKET keeps its own set in `config/group.php`.
+includes the door-to-door freight formerly run as RDD Shipping). Orders bought on KASAROSE MARKET are governed by
+KASAROSE MARKET's own delivery and returns policies, and that carve-out is stated explicitly on the page. Do not fold
+marketplace timeframes into `$delivery_timeframes` here — KASAROSE MARKET keeps its own set in `config/group.php`.
 
 Real contact info, service descriptions and group structure live in [includes/config.php](includes/config.php) —
 check there before inventing or changing any phone number, email, or company description. Avoid adding fabricated
@@ -243,11 +242,11 @@ require 'partials/header.php'; // offcanvas menu, topbar-less nav (see below)
   link** — a later rule in `_header.scss` resets `.navbar-brand`'s own margin to 0. The footer uses the white
   horizontal lockup directly on the dark parallax (the old white rounded box behind it is gone).
 
-  **KROSEMARKET's logo** (`images/krosemarket-*.png`) is generated separately by
-  [tools/make-krosemarket-logo.py](tools/make-krosemarket-logo.py), *not* the Pillow pipeline above. It reuses the
+  **KASAROSE MARKET's logo** (`images/kasarosemarket-*.png`) is generated separately by
+  [tools/make-kasarosemarket-logo.py](tools/make-kasarosemarket-logo.py), *not* the Pillow pipeline above. It reuses the
   actual K/R/O/S/E/A letterforms cut out of `images/kasarose-logo.png`'s wordmark (same face, exact match) and
   draws the missing M/T glyphs to that face's measured metrics, so the two brands read as one family without
-  KROSEMARKET being mistakable for the parent. Re-run that script, don't hand-edit the outputs, if the source
+  KASAROSE MARKET being mistakable for the parent. Re-run that script, don't hand-edit the outputs, if the source
   KASAROSE wordmark ever changes.
 - [partials/footer.php](partials/footer.php) and [partials/scripts.php](partials/scripts.php) are the shared footer
   and the common `<script>` tag list respectively.
@@ -266,7 +265,7 @@ require 'partials/header.php'; // offcanvas menu, topbar-less nav (see below)
 - [includes/config.php](includes/config.php) is the single source of truth for contact info (US/Ghana phone
   numbers, support email, the Ghana office address and its Maps embed), the back-office URLs (`BACKOFFICE_URL`,
   `ADMIN_URL`, `STAFF_MAIL_URL`), and the `$group_companies` array (KASAROSE LOGISTICS, Neoride Africa,
-  KROSEMARKET) plus the `SITE_URL_*` outbound-link constants, which both `index.php` and `our-companies.php` loop
+  KASAROSE MARKET) plus the `SITE_URL_*` outbound-link constants, which both `index.php` and `our-companies.php` loop
   over — update data there, not in individual pages. It also holds:
   - `$site_services` — the seven service pages, `filename => label`, in nav order. The nav dropdown, the footer's
     "Our Services" column, the offcanvas canvas-menu and `partials/service-sidebar.php` all loop over it. Every

@@ -1,6 +1,6 @@
 <?php
 $page_title = 'About Us';
-$meta_description = 'About KASAROSE LOGISTICS — door-to-door freight, real estate, property management, and our sister company KROSEMARKET.';
+$meta_description = 'About KASAROSE LOGISTICS — door-to-door freight, real estate, property management, and our sister company KASAROSE MARKET.';
 require 'partials/head.php';
 require 'partials/header.php';
 ?>
@@ -48,7 +48,7 @@ require 'partials/header.php';
                            <i class="fa-solid fa-sitemap fa-2x text-primary" aria-hidden="true"></i>
                            <span class="purecounter display-1" data-purecounter-end="2">2</span>
                         </div>
-                        <p>KASAROSE LOGISTICS and KROSEMARKET, working as one group.</p>
+                        <p>KASAROSE LOGISTICS and KASAROSE MARKET, working as one group.</p>
                      </div>
                   </div>
                   <div class="col-lg-6 col-sm-6">
@@ -233,7 +233,7 @@ require 'partials/header.php';
                   <h2 class="sec-title">A group that grew from one idea into two companies.</h2>
                   <p>KASAROSE LOGISTICS began with door-to-door import &amp; export shipping and has
                      grown into a diversified group spanning freight, real estate, property management and
-                     ecommerce (KROSEMARKET) across the United States and Ghana.</p>
+                     ecommerce (KASAROSE MARKET) across the United States and Ghana.</p>
 
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                      <li class="nav-item" role="presentation">
@@ -280,7 +280,7 @@ require 'partials/header.php';
                            </div>
                            <div class="tab-txt">
                               <p>KASAROSE LOGISTICS handles freight, import &amp; export shipping, real estate and
-                                 property management directly. KROSEMARKET is our online marketplace, where vetted
+                                 property management directly. KASAROSE MARKET is our online marketplace, where vetted
                                  Ghanaian vendors sell direct to shoppers nationwide.</p>
                            </div>
                         </div>
@@ -437,7 +437,7 @@ require 'partials/header.php';
                   </div>
                   <ul class="check">
                      <li>Door-to-door freight, real estate and property management from KASAROSE LOGISTICS</li>
-                     <li>Nationwide online shopping from KROSEMARKET</li>
+                     <li>Nationwide online shopping from KASAROSE MARKET</li>
                   </ul>
                   <div class="quick-call d-flex align-items-center">
                      <span class="bg-info icon-lg rounded-circle text-primary"><i

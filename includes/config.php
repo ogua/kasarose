@@ -30,7 +30,10 @@ define('SITE_URL', 'https://kasarose.com'); // production domain — used for ca
 // partials/head.php. This is a display decision on this site only; it does not
 // by itself mean Neoride's own site or the back office have been updated to
 // match, so treat those as a separate, not-yet-done sweep.
-define('SITE_URL_KROSEMARKET', 'https://krosemarket.com');
+// CONFIRM BEFORE LAUNCH: kasarosemarket.com is assumed from the marketplace's
+// name (KASAROSE MARKET) and is not yet verified as live. Every marketplace link
+// on this site resolves through this constant.
+define('SITE_URL_KASAROSE_MARKET', 'https://kasarosemarket.com');
 
 // The back-office Laravel application (Projects/kasabazaar). It owns the shipment
 // database this site reads for tracking, and serves the uploaded blog images that
@@ -77,7 +80,7 @@ define('CONTACT_MAP_EMBED', 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!
 // Two companies shown here since 2026-09; the copy that counts them lives in
 // our-companies.php, about.php, faq.php and partials/footer.php. Neoride Africa
 // is a real sister company but is deliberately not listed here — see the note
-// above SITE_URL_KROSEMARKET.
+// above SITE_URL_KASAROSE_MARKET.
 $group_companies = [
     [
         'name' => 'KASAROSE LOGISTICS',
@@ -89,15 +92,15 @@ $group_companies = [
         'logo' => 'images/kasarose-logistics-logo.png',
     ],
     [
-        'name' => 'KROSEMARKET',
+        'name' => 'KASAROSE MARKET',
         'tagline' => "Ghana's multi-vendor marketplace, delivered.",
         'description' => "The group's ecommerce marketplace, where vetted Ghanaian vendors sell direct to shoppers nationwide. Orders are carried by the group's own logistics network, so a small seller can reach the whole country without owning a single vehicle.",
-        'url' => SITE_URL_KROSEMARKET,
-        'url_label' => 'Visit krosemarket.com',
+        'url' => SITE_URL_KASAROSE_MARKET,
+        'url_label' => 'Visit kasarosemarket.com',
         'external' => true,
         // Built from the KASAROSE brand assets so the two read as one family —
-        // see tools/make-krosemarket-logo.py.
-        'logo' => 'images/krosemarket-logo.png',
+        // see tools/make-kasarosemarket-logo.py.
+        'logo' => 'images/kasarosemarket-logo.png',
     ],
 ];
 

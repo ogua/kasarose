@@ -45,7 +45,7 @@ require 'partials/header.php';
                      <span class="sub-title h5">One Group, Multiple Strengths</span>
                      <!-- h2, not h1: only one h1 per page, and the first slide already carries it. -->
                      <h2 class="display-1 fw-bold">One group moving goods, people and property forward.</h2>
-                     <p>Our own freight network and the KROSEMARKET marketplace &mdash; KASAROSE LOGISTICS
+                     <p>Our own freight network and the KASAROSE MARKET marketplace &mdash; KASAROSE LOGISTICS
                         serves clients across the United States, Ghana, and beyond.</p>
                      <div class="d-sm-flex slide-cta gap-4">
                         <a href="our-companies.php" class="btn btn-hover btn-primary">Our Companies <i

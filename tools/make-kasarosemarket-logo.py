@@ -1,20 +1,20 @@
 """
-Generate the KROSEMARKET logo family.
+Generate the KASAROSE MARKET logo family.
 
-KROSEMARKET is the group's ecommerce marketplace. Its logo is built from the
+KASAROSE MARKET is the group's ecommerce marketplace. Its logo is built from the
 KASAROSE brand assets so the two read as one family:
 
   * the K mark is lifted unchanged from images/kasarose-logo.png (blue K with
     the red sliver — the marketplace's colourway, as opposed to the parent's navy);
-  * the letters K R O S E A are the real KASAROSE letterforms, cut straight out
+  * the letters K A S R O E are the real KASAROSE letterforms, cut straight out
     of that logo's wordmark, so the face matches exactly;
   * M and T do not occur in "KASAROSE", so they are drawn here to the measured
     metrics of that face (cap height 119, stem 30, corner radius 4).
 
 Colour split mirrors the parent lockup (black wordmark + red accent):
-"KROSE" black, "MARKET" in the mark's red.
+"KASAROSE" black, "MARKET" in the mark's red.
 
-Run from the repo root:  python tools/make-krosemarket-logo.py
+Run from the repo root:  python tools/make-kasarosemarket-logo.py
 """
 from PIL import Image, ImageDraw
 import numpy as np
@@ -35,8 +35,9 @@ WHITE = (255, 255, 255)
 SPANS = {'K': (50, 165), 'S': (298, 405), 'A': (412, 547),
          'R': (556, 671), 'O': (685, 812), 'E': (950, 1051)}
 
-WORD, SPLIT = 'KROSEMARKET', 5             # KROSE | MARKET
+WORD, SPLIT = 'KASAROSEMARKET', 8          # KASAROSE | MARKET
 GAP = 13
+WORD_SPACE = 48
 
 
 def _trim(arr):
@@ -75,10 +76,13 @@ def draw_M(w=150, h=CAP, s=STEM, d_=33, vy=82, r=RADIUS):
 
 
 def wordmark(g, dark, accent):
-    width = sum(g[c].width for c in WORD) + GAP * (len(WORD) - 1)
+    # Two words, so a word space (about half a letter) goes in at the colour split.
+    width = sum(g[c].width for c in WORD) + GAP * (len(WORD) - 1) + WORD_SPACE
     im = Image.new('RGBA', (width, CAP), (0, 0, 0, 0))
     x = 0
     for i, c in enumerate(WORD):
+        if i == SPLIT:
+            x += WORD_SPACE
         m = g[c]
         layer = Image.new('RGBA', m.size, (dark if i < SPLIT else accent) + (255,))
         layer.putalpha(m)
@@ -130,13 +134,13 @@ def main():
     word_w = wordmark(g, WHITE, RED)
 
     assets = {
-        'krosemarket-wordmark.png': word,
-        'krosemarket-wordmark-white.png': word_w,
-        'krosemarket-logo.png': lockup_stacked(mark, word),
-        'krosemarket-logo-white.png': lockup_stacked(mark_w, word_w),
-        'krosemarket-logo-h.png': lockup_h(mark, word),
-        'krosemarket-logo-h-white.png': lockup_h(mark_w, word_w),
-        'krosemarket-icon.png': mark,
+        'kasarosemarket-wordmark.png': word,
+        'kasarosemarket-wordmark-white.png': word_w,
+        'kasarosemarket-logo.png': lockup_stacked(mark, word),
+        'kasarosemarket-logo-white.png': lockup_stacked(mark_w, word_w),
+        'kasarosemarket-logo-h.png': lockup_h(mark, word),
+        'kasarosemarket-logo-h-white.png': lockup_h(mark_w, word_w),
+        'kasarosemarket-icon.png': mark,
     }
     for name, im in assets.items():
         im.save(OUT + name)

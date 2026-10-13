@@ -1,6 +1,6 @@
 <?php
 $page_title = 'Privacy Policy';
-$meta_description = 'Privacy Policy for the KASAROSE LOGISTICS website — what information we collect through our contact and quote forms, how we use it, and how it relates to our sister company KROSEMARKET.';
+$meta_description = 'Privacy Policy for the KASAROSE LOGISTICS website — what information we collect through our contact and quote forms, how we use it, and how it relates to our sister company KASAROSE MARKET.';
 require 'partials/head.php';
 require 'partials/header.php';
 ?>
@@ -41,10 +41,10 @@ require 'partials/header.php';
                   operated, hold their own customer data and publish their own privacy policies on their own sites:
                </p>
                <ul class="ct-list">
-                  <li><strong>KROSEMARKET</strong> &mdash; the group's ecommerce marketplace
-                     (<a href="<?php echo SITE_URL_KROSEMARKET; ?>" target="_blank" rel="noopener">krosemarket.com</a>).
+                  <li><strong>KASAROSE MARKET</strong> &mdash; the group's ecommerce marketplace
+                     (<a href="<?php echo SITE_URL_KASAROSE_MARKET; ?>" target="_blank" rel="noopener">kasarosemarket.com</a>).
                      If you have shopped or sold there, that account and its order history are governed by the
-                     KROSEMARKET privacy policy, not this one.</li>
+                     KASAROSE MARKET privacy policy, not this one.</li>
                </ul>
 
                <h3 class="display-5 mt-5">Information We Collect</h3>
@@ -77,7 +77,7 @@ require 'partials/header.php';
 
                <p>Freight and shipping inquiries are handled by us directly. We share your information with
                   another company in the group only where that is necessary to answer you &mdash; for example,
-                  passing a marketplace order question to KROSEMARKET. We share the minimum needed to handle the
+                  passing a marketplace order question to KASAROSE MARKET. We share the minimum needed to handle the
                   request, and marketing lists are never shared between group companies.</p>
 
                <h3 class="display-5 mt-5">How We Store &amp; Protect Your Information</h3>

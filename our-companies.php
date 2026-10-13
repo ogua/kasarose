@@ -1,6 +1,6 @@
 <?php
 $page_title = 'Our Companies';
-$meta_description = 'The companies of KASAROSE LOGISTICS: KASAROSE LOGISTICS (freight, real estate, property management) and KROSEMARKET (ecommerce marketplace).';
+$meta_description = 'The companies of KASAROSE LOGISTICS: KASAROSE LOGISTICS (freight, real estate, property management) and KASAROSE MARKET (ecommerce marketplace).';
 require 'partials/head.php';
 require 'partials/header.php';
 ?>
@@ -70,13 +70,13 @@ require 'partials/header.php';
       </div>
    </section>
 
-   <!-- KROSEMARKET -->
+   <!-- KASAROSE MARKET -->
    <section class="about-sec2 overflow-hidden sec-padding bg-shade">
       <div class="container">
          <div class="row align-items-center flex-lg-row-reverse">
             <div class="col-lg-6">
                <div class="company-media company-media-logo round">
-                  <img src="<?php echo htmlspecialchars($group_companies[1]['logo']); ?>" alt="KROSEMARKET logo">
+                  <img src="<?php echo htmlspecialchars($group_companies[1]['logo']); ?>" alt="KASAROSE MARKET logo">
                </div>
             </div>
             <div class="col-lg-6 pe-lg-5 mt-5 mt-lg-0">
@@ -93,8 +93,8 @@ require 'partials/header.php';
                      <li>One cart across multiple vendors, one payment</li>
                      <li>Nationwide delivery carried by KASAROSE LOGISTICS</li>
                   </ul>
-                  <a href="<?php echo SITE_URL_KROSEMARKET; ?>" target="_blank" rel="noopener" class="btn btn-primary">Visit
-                     krosemarket.com <i class="fa fa-arrow-right"></i><span></span></a>
+                  <a href="<?php echo SITE_URL_KASAROSE_MARKET; ?>" target="_blank" rel="noopener" class="btn btn-primary">Visit
+                     kasarosemarket.com <i class="fa fa-arrow-right"></i><span></span></a>
                </div>
             </div>
          </div>

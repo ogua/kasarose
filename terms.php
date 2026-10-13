@@ -40,7 +40,7 @@ require 'partials/header.php';
                <h3 class="display-5 mt-5">About This Website</h3>
                <p>This website provides information about KASAROSE LOGISTICS' door-to-door freight, import &amp;
                   export shipping, real estate and property management services, and about our sister company
-                  KROSEMARKET. Submitting a contact or quote request through this website is an inquiry only
+                  KASAROSE MARKET. Submitting a contact or quote request through this website is an inquiry only
                   &mdash; it is not a binding contract, order or reservation. Any shipping quote, service pricing
                   or engagement is confirmed separately, directly with our team.</p>
 
@@ -49,12 +49,12 @@ require 'partials/header.php';
                <ul class="ct-list">
                   <li><strong>KASAROSE LOGISTICS</strong> &mdash; door-to-door air and sea freight, ecommerce package
                      forwarding, import &amp; export shipping, real estate and property management (this website).</li>
-                  <li><strong>KROSEMARKET</strong> &mdash; the group's multi-vendor ecommerce marketplace
-                     (<a href="<?php echo SITE_URL_KROSEMARKET; ?>" target="_blank" rel="noopener">krosemarket.com</a>).</li>
+                  <li><strong>KASAROSE MARKET</strong> &mdash; the group's multi-vendor ecommerce marketplace
+                     (<a href="<?php echo SITE_URL_KASAROSE_MARKET; ?>" target="_blank" rel="noopener">kasarosemarket.com</a>).</li>
                </ul>
                <p>Each company holds its own contracts and its own liabilities. Links to their websites are provided
                   for your convenience; once you leave this site, your use of their websites &mdash; including buying
-                  or selling on KROSEMARKET &mdash; is governed by their own terms and privacy practices, not these
+                  or selling on KASAROSE MARKET &mdash; is governed by their own terms and privacy practices, not these
                   Terms.</p>
 
                <h3 class="display-5 mt-5">Website Content</h3>

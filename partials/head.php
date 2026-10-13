@@ -123,11 +123,11 @@ if ($meta_robots === 'index, follow' && $current_path !== 'index.php') {
          {
             "@type": "OnlineStore",
             "name": "KASAROSEMARKET",
-            "url": "<?php echo SITE_URL_KROSEMARKET; ?>"
+            "url": "<?php echo SITE_URL_KASAROSE_MARKET; ?>"
          }
       ],
       "sameAs": [
-         "<?php echo SITE_URL_KROSEMARKET; ?>"
+         "<?php echo SITE_URL_KASAROSE_MARKET; ?>"
       ]
    }
    </script>
