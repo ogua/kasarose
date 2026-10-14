@@ -15,8 +15,8 @@
    <script src="js/jquery.nice-select.min.js"></script>
    <script src="js/jquery.timepicker.min.js"></script>
    <script src="js/bootstrap-datepicker.js"></script>
-   <script src="js/form.js"></script>
-   <script src="js/custom.js"></script>
+   <script src="<?php echo kr_asset('js/form.js'); ?>"></script>
+   <script src="<?php echo kr_asset('js/custom.js'); ?>"></script>
 </body>
 
 </html>

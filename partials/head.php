@@ -152,7 +152,7 @@ if ($meta_robots === 'index, follow' && $current_path !== 'index.php') {
    <link rel="stylesheet" href="css/jquery.datepicker.css">
    <link rel="stylesheet" href="css/jquery.timepicker.min.css">
    <!-- Style CSS -->
-   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="<?php echo kr_asset('css/style.css'); ?>">
 </head>
 
 <body>

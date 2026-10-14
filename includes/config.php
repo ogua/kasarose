@@ -203,3 +203,18 @@ function kr_active(string ...$pages): string
 {
     return in_array(kr_current_page(), $pages, true) ? ' active' : '';
 }
+
+/**
+ * A local asset URL with a cache-busting version, e.g. "css/style.css?v=1760450583".
+ *
+ * The host's CDN serves CSS/JS with a 7-day Cache-Control, so without this a deploy
+ * reaches visitors as new HTML on top of their week-old cached stylesheet (that is
+ * how the colour nav logo once went live without its white panel). The version is
+ * the file's modification time, so it changes on every deploy and nowhere else.
+ * Use it for files we edit (style.css, custom.js, form.js); vendor files never change.
+ */
+function kr_asset(string $path): string
+{
+    $mtime = @filemtime(__DIR__ . '/../' . $path);
+    return $mtime ? $path . '?v=' . $mtime : $path;
+}

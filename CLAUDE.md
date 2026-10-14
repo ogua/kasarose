@@ -207,6 +207,11 @@ Frontend build tooling is Gulp-based (see [gulpfile.js](gulpfile.js)):
   at `http://localhost/.../KasaRose%20Website/index.php`, or `php -S 127.0.0.1:8990` for a quick local smoke test).
   Opening the files directly (`file://`) will not execute the PHP.
 
+**Cache-busting**: production sits behind Hostinger's CDN, which serves CSS/JS with a 7-day `Cache-Control`.
+`style.css`, `custom.js` and `form.js` are therefore linked through `kr_asset()` (in `includes/config.php`), which
+appends `?v=<file mtime>` so a deploy forces a fresh download. Without it, visitors get new HTML on top of a stale
+stylesheet (it once shipped the colour nav logo without its white panel). Link any new first-party asset the same way.
+
 **Important**: never hand-edit the compiled files [css/style.css](css/style.css) or [js/custom.js](js/custom.js)
 directly — they are generated. Edit the sources in `app/scss/` or `app/js/custom.js` and rebuild.
 
