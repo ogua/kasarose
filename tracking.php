@@ -10,6 +10,7 @@ $ref       = trim($_GET['ref'] ?? '');
 $searched  = $ref !== '';
 $shipment  = null;
 $timeline  = [];
+$items     = [];
 $lookupErr = false;
 
 if ($searched) {
@@ -19,10 +20,19 @@ if ($searched) {
     } elseif ($result !== null) {
         $shipment = $result;
         $timeline = kr_shipment_timeline($ref);
+
+        // Contents and receivers only for the random KBZ tracking number. The shipping
+        // reference (CON50-26-C1-1, CON50-26-C1-2, ...) is sequential, so anyone could
+        // walk through it — it gets the status alone.
+        if ($shipment['tracking_number'] && strcasecmp($ref, $shipment['tracking_number']) === 0) {
+            $items = kr_shipment_items((string) $shipment['id']);
+        }
     }
 }
 
-$status = $shipment ? kr_status_meta((string) $shipment['status']) : null;
+$status = $shipment
+    ? kr_status_meta((string) $shipment['status'], kr_shipment_received($shipment))
+    : null;
 
 require 'partials/header.php';
 ?>
@@ -108,23 +118,40 @@ require 'partials/header.php';
                         </span>
                      </div>
 
-                     <?php if ($status['step'] > 0): ?>
-                        <?php $stages = ['Booked' => 1, 'In Transit' => 2, 'Delivered' => 3]; ?>
-                        <div class="row g-3 mb-5">
-                           <?php foreach ($stages as $name => $n): $done = $status['step'] >= $n; ?>
-                              <div class="col-4">
-                                 <div class="progress" style="height:6px;">
-                                    <div class="progress-bar<?php echo $done ? ' bg-primary' : ' bg-light'; ?>"
-                                       role="progressbar" style="width:100%"
-                                       aria-valuenow="<?php echo $done ? 100 : 0; ?>" aria-valuemin="0"
-                                       aria-valuemax="100"></div>
-                                 </div>
-                                 <p class="mt-2 mb-0 small<?php echo $done ? ' fw-bold text-dark' : ' text-muted'; ?>">
-                                    <?php echo $name; ?>
-                                 </p>
-                              </div>
+                     <?php if ($status['step'] !== null): ?>
+                        <?php
+                        $stages     = kr_tracking_stages();
+                        $step       = $status['step'];
+                        $stageDates = [
+                            2 => kr_date($shipment['shipped_at']),
+                            4 => kr_date($shipment['delivered_at']),
+                        ];
+                        // The connecting line runs between the first and last badge centres
+                        // (10%–90% of the row); fill it up to the current stage.
+                        $fill = $step > 1 ? ($step - 1) / (count($stages) - 1) * 80 : 0;
+                        ?>
+                        <ol class="track-stages" style="--track-fill: <?php echo $fill; ?>%;"
+                           aria-label="Shipment progress">
+                           <?php foreach ($stages as $n => $stage):
+                              $state = $n < $step ? 'is-done' : ($n === $step ? 'is-current' : 'is-upcoming'); ?>
+                              <li class="track-stage <?php echo $state; ?>"
+                                 <?php echo $n === $step ? 'aria-current="step"' : ''; ?>>
+                                 <span class="track-stage-img">
+                                    <img src="<?php echo $stage['image']; ?>" alt="" loading="lazy" width="110" height="110">
+                                    <?php if ($n <= $step): ?>
+                                       <span class="track-stage-check"><i class="fa-solid fa-check"></i></span>
+                                    <?php endif; ?>
+                                 </span>
+                                 <span class="track-stage-label"><?php echo $stage['label']; ?></span>
+                                 <?php if (!empty($stageDates[$n]) && $n <= $step): ?>
+                                    <span class="track-stage-date"><?php echo htmlspecialchars($stageDates[$n]); ?></span>
+                                 <?php endif; ?>
+                                 <span class="visually-hidden">
+                                    <?php echo $n < $step ? '(completed)' : ($n === $step ? '(current stage)' : '(upcoming)'); ?>
+                                 </span>
+                              </li>
                            <?php endforeach; ?>
-                        </div>
+                        </ol>
                      <?php endif; ?>
 
                      <div class="row g-4 mb-5">
@@ -134,7 +161,9 @@ require 'partials/header.php';
                         $facts = [
                             'Origin'             => $origin ?: null,
                             'Destination'        => $dest ?: null,
-                            'Shipped'            => kr_date($shipment['shipped_at']),
+                            // shipped_at is filled in when the shipment is booked, so only
+                            // show it once the shipment has actually reached that stage.
+                            'Shipped'            => ($status['step'] ?? 0) >= 2 ? kr_date($shipment['shipped_at']) : null,
                             'Estimated Delivery' => kr_date($shipment['estimated_delivery_date']),
                             'Delivered'          => kr_date($shipment['delivered_at'], 'M j, Y g:i A'),
                         ];
@@ -151,6 +180,47 @@ require 'partials/header.php';
                         <?php endforeach; ?>
                      </div>
 
+                     <?php if ($items): ?>
+                        <h3 class="display-5 mb-4">Items in This Shipment</h3>
+                        <div class="row g-4 mb-5">
+                           <?php foreach ($items as $group): ?>
+                              <div class="col-md-6">
+                                 <div class="track-receiver h-100">
+                                    <p class="track-receiver-name">
+                                       <i class="fa-solid fa-user"></i>
+                                       <span class="small text-uppercase">Receiver</span>
+                                       <strong><?php echo htmlspecialchars($group['receiver']); ?></strong>
+                                    </p>
+                                    <table class="table table-sm mb-0">
+                                       <thead>
+                                          <tr><th scope="col">Item</th><th scope="col" class="text-center">Qty</th><th scope="col" class="text-end">Box</th></tr>
+                                       </thead>
+                                       <tbody>
+                                          <?php foreach ($group['items'] as $item): ?>
+                                             <tr>
+                                                <td>
+                                                   <i class="fa-solid <?php echo $item['vehicle'] ? 'fa-car' : 'fa-box'; ?> text-primary me-1"></i>
+                                                   <?php echo htmlspecialchars($item['name']); ?>
+                                                </td>
+                                                <td class="text-center"><?php echo $item['quantity']; ?></td>
+                                                <td class="text-end"><?php echo htmlspecialchars($item['box'] ?: '—'); ?></td>
+                                             </tr>
+                                          <?php endforeach; ?>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+                           <?php endforeach; ?>
+                        </div>
+                     <?php elseif ($shipment['tracking_number'] && strcasecmp($ref, $shipment['tracking_number']) !== 0): ?>
+                        <p class="bg-shade round p-4 mb-5">
+                           <i class="fa-solid fa-circle-info text-primary"></i>
+                           To see the items in this shipment and who they are going to, search with the tracking
+                           number (it starts with <strong>KBZ</strong>) from your receipt or SMS rather than the
+                           shipment reference.
+                        </p>
+                     <?php endif; ?>
+
                      <?php if ($timeline): ?>
                         <h3 class="display-5 mb-4">Status History</h3>
                         <ul class="list-unstyled">
@@ -161,12 +231,13 @@ require 'partials/header.php';
                                        style="width:12px;height:12px;"></span>
                                  </div>
                                  <div>
-                                    <p class="mb-1 fw-bold"><?php echo htmlspecialchars(ucfirst((string) $event['status'])); ?></p>
+                                    <?php $eventLabel = kr_history_label((string) $event['status']); ?>
+                                    <p class="mb-1 fw-bold"><?php echo htmlspecialchars($eventLabel); ?></p>
                                     <?php if (!empty($event['location'])): ?>
                                        <p class="mb-1"><i class="fa-solid fa-location-dot"></i>
                                           <?php echo htmlspecialchars($event['location']); ?></p>
                                     <?php endif; ?>
-                                    <?php if (!empty($event['note'])): ?>
+                                    <?php if (!empty($event['note']) && strcasecmp(trim($event['note']), $eventLabel) !== 0): ?>
                                        <p class="mb-1"><?php echo htmlspecialchars($event['note']); ?></p>
                                     <?php endif; ?>
                                     <p class="mb-0 small text-muted">

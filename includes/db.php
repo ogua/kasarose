@@ -11,8 +11,11 @@
  *   - SELECT only. Never write. The credentials in includes/db-config.php should not
  *     even be able to.
  *   - Expose only what a person holding a tracking number is entitled to see: the
- *     reference, the status, the branch names and the dates. No client records, no
- *     addresses, no costs, no payment state.
+ *     reference, the status, the branch names and the dates — plus, only when the
+ *     lookup was by the random tracking number (not the sequential, guessable
+ *     shipping reference), item names and masked receiver names via
+ *     kr_shipment_items(). No client records, no addresses, no phone numbers, no
+ *     costs, no payment state.
  *   - Fail soft. A database that is unreachable must degrade to "we can't look that up
  *     right now", never a fatal error on a public page.
  */
@@ -80,17 +83,21 @@ function kr_find_shipment(string $query)
         return false;
     }
 
-    $sql = 'SELECT s.shipping_reference,
+    $sql = 'SELECT s.id,
+                   s.shipping_reference,
                    s.tracking_number,
                    s.status,
+                   s.is_received,
                    s.shipped_at,
                    s.estimated_delivery_date,
                    s.delivered_at,
                    s.created_at,
-                   ob.name    AS origin_name,
-                   ob.country AS origin_country,
-                   db.name    AS destination_name,
-                   db.country AS destination_country
+                   -- origin/destination_branch_id normally hold a place name picked in
+                   -- the back office (Michigan, Illinois, ... Ghana), not a branch id
+                   COALESCE(ob.name, s.origin_branch_id)      AS origin_name,
+                   ob.country                                 AS origin_country,
+                   COALESCE(db.name, s.destination_branch_id) AS destination_name,
+                   db.country                                 AS destination_country
             FROM shipments s
             LEFT JOIN branches ob ON ob.id = s.origin_branch_id
             LEFT JOIN branches db ON db.id = s.destination_branch_id
@@ -155,23 +162,175 @@ function kr_shipment_timeline(string $reference): array
 }
 
 /**
- * Presentation metadata for a shipments.status enum value.
- * `step` drives the three-stage progress bar; cancelled sits outside it.
+ * Whether the receiver has confirmed taking the shipment.
+ *
+ * shipments.is_received is the flag: staff set it with "Mark as Received" in the admin,
+ * and "Record Delivery" (admin or mobile API) sets it whenever a receiver signature is
+ * uploaded. The signature check below also covers deliveries recorded before that rule
+ * existed. (receiver_verifications is never written by the back office — don't use it.)
  */
-function kr_status_meta(string $status): array
+function kr_shipment_received(array $shipment): bool
+{
+    if (!empty($shipment['is_received'])) {
+        return true;
+    }
+
+    $pdo = kr_db();
+    if ($pdo === null || empty($shipment['id'])) {
+        return false;
+    }
+
+    try {
+        $stmt = $pdo->prepare("SELECT 1 FROM shipment_deliveries
+                               WHERE shipment_id = :id
+                                 AND receiver_signature IS NOT NULL AND receiver_signature <> ''
+                               LIMIT 1");
+        $stmt->execute([':id' => $shipment['id']]);
+        return (bool) $stmt->fetchColumn();
+    } catch (PDOException $e) {
+        error_log('kr_shipment_received: ' . $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * The items on a shipment, grouped by receiver, for the tracking page.
+ *
+ * Exposes only what helps a recipient recognise their goods: item name, quantity,
+ * box number and a vehicle's make/model/year. Receiver names are cut to first name
+ * plus last initial by kr_mask_name(). No phone, address, ID, VIN, value or cost.
+ *
+ * @return array<int, array{receiver: string, items: array<int, array>}>
+ */
+function kr_shipment_items(string $shipmentId): array
+{
+    $pdo = kr_db();
+    if ($pdo === null || $shipmentId === '') {
+        return [];
+    }
+
+    // shipment_items.shipment_id is back-filled by the Laravel model after save, so
+    // older rows may only be linked through their receiver — accept either.
+    $sql = "SELECT r.id                       AS receiver_id,
+                   COALESCE(r.receiver_name, '') AS receiver_name,
+                   COALESCE(p.name, '')       AS item_name,
+                   i.quantity,
+                   i.box_no,
+                   i.is_vehicle,
+                   i.vehicle_make,
+                   i.vehicle_model,
+                   i.vehicle_year
+            FROM shipment_items i
+            LEFT JOIN receivers r ON r.id = i.receiver_id
+            LEFT JOIN products  p ON p.id = i.product_id
+            WHERE i.shipment_id = :id1 OR r.shipment_id = :id2
+            ORDER BY r.receiver_name, i.box_no";
+
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':id1' => $shipmentId, ':id2' => $shipmentId]);
+        $rows = $stmt->fetchAll();
+    } catch (PDOException $e) {
+        error_log('kr_shipment_items: ' . $e->getMessage());
+        return [];
+    }
+
+    $groups = [];
+    foreach ($rows as $row) {
+        $key = (string) ($row['receiver_id'] ?? '');
+        if (!isset($groups[$key])) {
+            $groups[$key] = ['receiver' => kr_mask_name($row['receiver_name']), 'items' => []];
+        }
+
+        $name = trim($row['item_name']);
+        if (!empty($row['is_vehicle'])) {
+            $vehicle = trim(implode(' ', array_filter([
+                $row['vehicle_year'], $row['vehicle_make'], $row['vehicle_model'],
+            ])));
+            $name = $vehicle !== '' ? $vehicle : ($name ?: 'Vehicle');
+        }
+
+        $groups[$key]['items'][] = [
+            'name'     => $name !== '' ? $name : 'Item',
+            'quantity' => (int) $row['quantity'],
+            'box'      => trim((string) $row['box_no']),
+            'vehicle'  => !empty($row['is_vehicle']),
+        ];
+    }
+
+    return array_values($groups);
+}
+
+/**
+ * "Kwame Asante Mensah" -> "Kwame M.". Enough for a recipient to recognise their own
+ * name, not enough to identify a stranger's.
+ */
+function kr_mask_name(?string $name): string
+{
+    $parts = preg_split('/\s+/u', trim((string) $name), -1, PREG_SPLIT_NO_EMPTY);
+    if (!$parts) {
+        return 'Receiver';
+    }
+    $first = $parts[0];
+    if (count($parts) === 1) {
+        return $first;
+    }
+    return $first . ' ' . mb_strtoupper(mb_substr(end($parts), 0, 1)) . '.';
+}
+
+/**
+ * The five public stages on the tracking page, in order, with their images.
+ * Images are hand-drawn SVGs in images/tracking/, in the brand navy and red.
+ */
+function kr_tracking_stages(): array
+{
+    return [
+        1 => ['label' => 'Picked',         'image' => 'images/tracking/stage-picked.svg'],
+        2 => ['label' => 'Shipped',        'image' => 'images/tracking/stage-shipped.svg'],
+        3 => ['label' => 'Harbour / Port', 'image' => 'images/tracking/stage-port.svg'],
+        4 => ['label' => 'Delivery',       'image' => 'images/tracking/stage-delivery.svg'],
+        5 => ['label' => 'Received',       'image' => 'images/tracking/stage-received.svg'],
+    ];
+}
+
+/**
+ * Presentation metadata for a shipments.status value (the back office's
+ * App\Enums\ShippingStatus). `step` indexes kr_tracking_stages(): 0 means booked
+ * but not yet picked up; cancelled sits outside the tracker entirely (null).
+ *
+ * `$received` lifts a delivered shipment to the final Received stage.
+ */
+function kr_status_meta(string $status, bool $received = false): array
 {
     switch (strtolower(trim($status))) {
         case 'pending':
-            return ['label' => 'Booked',     'step' => 1, 'class' => 'warning', 'icon' => 'fa-box'];
-        case 'in transit':
-            return ['label' => 'In Transit', 'step' => 2, 'class' => 'info',    'icon' => 'fa-truck-fast'];
+            return ['label' => 'Booked — Awaiting Pickup', 'step' => 0, 'class' => 'warning', 'icon' => 'fa-clipboard-list'];
+        case 'pickup':
+            return ['label' => 'Picked Up',  'step' => 1, 'class' => 'warning', 'icon' => 'fa-box'];
+        case 'shipped':
+        case 'in transit':   // legacy value, renamed to 'shipped' in August 2026
+            return ['label' => 'Shipped',    'step' => 2, 'class' => 'info',    'icon' => 'fa-ship'];
+        case 'cleared':
+            return ['label' => 'At Port — Customs Cleared', 'step' => 3, 'class' => 'info', 'icon' => 'fa-anchor'];
         case 'delivered':
-            return ['label' => 'Delivered',  'step' => 3, 'class' => 'success', 'icon' => 'fa-circle-check'];
+            return $received
+                ? ['label' => 'Received',  'step' => 5, 'class' => 'success', 'icon' => 'fa-circle-check']
+                : ['label' => 'Delivered', 'step' => 4, 'class' => 'success', 'icon' => 'fa-truck-fast'];
         case 'cancelled':
-            return ['label' => 'Cancelled',  'step' => 0, 'class' => 'danger',  'icon' => 'fa-circle-xmark'];
+            return ['label' => 'Cancelled',  'step' => null, 'class' => 'danger', 'icon' => 'fa-circle-xmark'];
         default:
-            return ['label' => ucfirst($status), 'step' => 1, 'class' => 'secondary', 'icon' => 'fa-box'];
+            return ['label' => ucfirst($status), 'step' => 0, 'class' => 'secondary', 'icon' => 'fa-box'];
     }
+}
+
+/**
+ * Display label for a status-history row, matching the tracker badge wording.
+ * History rows carry the shipment status at the time, plus 'received', which the
+ * back office logs when a receiver confirms receipt.
+ */
+function kr_history_label(string $status): string
+{
+    return strtolower(trim($status)) === 'received' ? 'Received' : kr_status_meta($status)['label'];
 }
 
 /**

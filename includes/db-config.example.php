@@ -15,7 +15,19 @@
  *   GRANT SELECT ON kasabazaar.branches         TO 'kasarose_web_ro'@'localhost';
  *   GRANT SELECT ON kasabazaar.trackings        TO 'kasarose_web_ro'@'localhost';
  *   GRANT SELECT ON kasabazaar.shipment_updates TO 'kasarose_web_ro'@'localhost';
+ *   -- tracking.php: items, masked receivers, and the "Received" stage
+ *   GRANT SELECT ON kasabazaar.shipment_items      TO 'kasarose_web_ro'@'localhost';
+ *   GRANT SELECT ON kasabazaar.receivers           TO 'kasarose_web_ro'@'localhost';
+ *   GRANT SELECT ON kasabazaar.products            TO 'kasarose_web_ro'@'localhost';
+ *   GRANT SELECT ON kasabazaar.shipment_deliveries TO 'kasarose_web_ro'@'localhost';
+ *   -- news.php / news-detail.php
+ *   GRANT SELECT ON kasabazaar.blogs               TO 'kasarose_web_ro'@'localhost';
+ *   GRANT SELECT ON kasabazaar.blog_categories     TO 'kasarose_web_ro'@'localhost';
  *   FLUSH PRIVILEGES;
+ *
+ * Note: a column-level GRANT would be tighter for receivers (the site reads only
+ * receiver_name and shipment_id), e.g.
+ *   GRANT SELECT (id, shipment_id, receiver_name) ON kasabazaar.receivers TO ...;
  *
  * If this file is absent the site still runs; tracking.php degrades to a notice
  * telling visitors to contact us, rather than fataling (see includes/db.php).

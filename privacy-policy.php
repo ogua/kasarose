@@ -64,11 +64,16 @@ require 'partials/header.php';
                   records and show you the status of that one shipment: its reference, its current status, the
                   branches it is travelling between, the dates it moved, and any status notes our staff have
                   recorded against it.</p>
-               <p>We deliberately do not show anything else held against a shipment &mdash; no sender or recipient
-                  names, no addresses, no contents, and no prices or payment information. Anyone holding the
-                  tracking number can see the status, so treat your tracking number as you would any other
-                  reference to your shipment. We do not store the numbers you type into the tracking form beyond
-                  ordinary web server logs.</p>
+               <p>When you search with the tracking number itself (not the shipment reference), we also list the
+                  items in the shipment &mdash; item name, quantity and box number, or a vehicle&rsquo;s year, make
+                  and model &mdash; grouped by recipient, with each recipient shown by first name and last initial
+                  only, so the people at the other end can recognise their goods.</p>
+               <p>We deliberately do not show anything else held against a shipment &mdash; no sender names, no
+                  full recipient names, no addresses or phone numbers, no vehicle identification numbers, and no
+                  prices, values or payment information. Anyone holding the tracking number can see what is
+                  described above, so treat your tracking number as you would any other reference to your
+                  shipment. We do not store the numbers you type into the tracking form beyond ordinary web
+                  server logs.</p>
 
                <h3 class="display-5 mt-5">How We Use Your Information</h3>
                <p>Information submitted through our forms is used only to respond to your inquiry or quote

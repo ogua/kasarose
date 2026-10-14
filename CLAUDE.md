@@ -143,9 +143,32 @@ other, and don't assume either has happened.
   `false` for "the lookup itself failed" — [tracking.php](tracking.php) shows a different message for each.
 - `kr_shipment_timeline($reference)` — a status history built by unioning `trackings` (branch-scoped status
   changes) and `shipment_updates` (free-text location notes), since the Laravel app writes to both and neither
-  alone is authoritative.
-- `kr_status_meta($status)` — maps the `shipments.status` enum (`pending` / `in transit` / `delivered` /
-  `cancelled`) to the label/step/badge-class the tracking page's three-stage progress bar uses.
+  alone is authoritative. In practice `shipment_updates` carries the history: since October 2026 the back
+  office's `ShipmentObserver` writes a row on **every** status change (admin edit, Record Delivery, Update Status,
+  mobile API, trips, bulk container jobs) plus a `received` row when receipt is confirmed. Before that only the
+  "Update Status" action wrote one, so history went stale — a backfill migration repairs old shipments. Rows are
+  labelled for display by `kr_history_label()`. Note `shipments.origin_branch_id`/`destination_branch_id` normally
+  hold a **place name** (Michigan, Illinois, … Ghana), not a branch id — `kr_find_shipment()` falls back to it.
+- `kr_status_meta($status, $received)` — maps `shipments.status` (now a string backed by the back office's
+  `App\Enums\ShippingStatus`: `pending` / `pickup` / `shipped` / `cleared` / `delivered` / `cancelled`; legacy
+  `in transit` is treated as `shipped`) to a label/badge-class and a `step` into `kr_tracking_stages()` — the five
+  photo stages **Picked → Shipped → Harbour / Port → Delivery → Received**. `pending` is step 0 (booked, nothing
+  reached), `cancelled` is `null` (no tracker). `delivered` only reaches Received when `kr_shipment_received()` is
+  true — i.e. `shipments.is_received` is set, or a `shipment_deliveries` row carries a `receiver_signature`. In the
+  back office, staff set `is_received` with the **Mark as Received** row action, and **Record Delivery** (admin and
+  `POST /api/v1/shipments/{id}/deliveries`) sets it automatically whenever a signature is uploaded; the signature
+  fallback here covers deliveries recorded before that rule. `receiver_verifications` is never written by the back
+  office — don't read it.
+  The stage images in `images/tracking/stage-*.svg` are hand-drawn flat illustrations (hand truck, container
+  ship, port crane, delivery van, house with a delivered box) in the brand navy `#052240` / red `#e4252c` on a
+  `#EEF3F8` circle — they replaced an earlier set of gallery-photo crops. Edit the SVGs directly; keep any new
+  stage in the same palette and 160×160 circular frame.
+- `kr_shipment_items($shipmentId)` — the shipment's items grouped by receiver: item name, quantity, box number,
+  vehicle year/make/model, and the receiver's name **masked** by `kr_mask_name()` to first name + last initial.
+  [tracking.php](tracking.php) calls it **only when the lookup matched the random `KBZ…` tracking number**, never
+  the shipping reference — references (`CON50-26-C1-1`, `-2`, …) are sequential and enumerable. This is
+  described to the public in [privacy-policy.php](privacy-policy.php)'s Shipment Tracking section; widen what it
+  returns only together with that copy.
 - `kr_blog_posts()` / `kr_blog_post($slug)` — published (`status = 1`) rows from `blogs`/`blog_categories`, used
   by [news.php](news.php) / [news-detail.php](news-detail.php). Posts are authored in the Filament admin; this
   site only ever reads them.
@@ -157,7 +180,8 @@ other, and don't assume either has happened.
   careless admin account should not be able to turn a published post into stored XSS on this domain.
 
 **Rules for anything added to `includes/db.php`:** SELECT only, never write. Expose only what a person holding a
-tracking number is entitled to see — reference, status, branch names, dates. No client names, addresses, costs,
+tracking number is entitled to see — reference, status, branch names, dates, and (tracking-number lookups only)
+item names and masked receiver names. No sender names, full receiver names, addresses, phone numbers, VINs, costs,
 or payment state. Fail soft, always.
 
 **Why the feedback form doesn't write to the database:** `customer_feedback` has a UUID primary key, a checked

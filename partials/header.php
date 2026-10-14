@@ -115,7 +115,7 @@
             <nav class="navbar navbar-expand-xl">
                <div class="container ct-container">
                   <a href="index.php" class="navbar-brand">
-                     <img src="images/kasarose-logo-h-white.png" alt="KASAROSE" class="img-fluid">
+                     <img src="images/kasarose-logistics-logo-h.png" alt="<?php echo SITE_NAME; ?>" class="img-fluid">
                   </a>
                   <button class="navbar-toggler offcanvas-nav-btn" type="button">
                      Menu <svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" fill="none"
@@ -144,7 +144,7 @@
                   </div>
                   <div class="offcanvas offcanvas-start offcanvas-nav">
                      <div class="offcanvas-header">
-                        <a href="index.php" class="text-inverse"><img src="images/kasarose-logo-h-white.png" alt="KASAROSE"></a>
+                        <a href="index.php" class="brand-plate"><img src="images/kasarose-logistics-logo-h.png" alt="<?php echo SITE_NAME; ?>"></a>
                         <button type="button" class="btn-close bg-primary" data-bs-dismiss="offcanvas"
                            aria-label="Close"></button>
                      </div>
@@ -163,9 +163,9 @@
                            <li class="nav-item">
                               <a class="nav-link<?php echo kr_active('services.php'); ?>" href="services.php">Services</a>
                            </li>
-                           <li class="nav-item">
+                           <!-- <li class="nav-item">
                               <a class="nav-link<?php echo kr_active('quote.php'); ?>" href="quote.php">Request Quote</a>
-                           </li>
+                           </li> -->
                            <li class="nav-item">
                               <a class="nav-link<?php echo kr_active('tracking.php'); ?>" href="tracking.php">Tracking</a>
                            </li>
